@@ -1,6 +1,6 @@
 :- dynamic
-    xpozytywne/2,
-    xnegatywne/2.
+    xpozytywne/1,
+    xnegatywne/1.
 
 podejrzenie(grypa) :-
         ma_objaw(goraczka),
@@ -131,22 +131,22 @@ podejrzenie(gruzlica) :-
         ma_objaw(oslabienie).
 
 
-ma_objaw(X,Y) :- xpozytywne(X,Y), !.
-ma_objaw(X,Y) :- \+xnegatywne(X,Y), pytaj(X,Y,tak).
+ma_objaw(X) :- xpozytywne(X), !.
+ma_objaw(X) :- \+xnegatywne(X), pytaj(X,tak).
 
-pytaj(X, Y, tak) :- !, format('Czy ma Pan/Pani ~w ? (t/n)~n',[Y]),
+pytaj(X, tak) :- !, format('Czy ma Pan/Pani ~w ? (t/n)~n',[X]),
                     read_line_to_codes(user_input,MenuCodes),
                     string_codes(MyString,MenuCodes),
                     atom_number(MyString, Reply),
-                    pamietaj(X,Y,Reply).
+                    pamietaj(X,Reply).
 
 wyczysc_fakty :- write('Przycisnij cos aby wyjsc'), nl,
                     retractall(xpozytywne(_,_)),
                     retractall(xnegatywne(_,_)),
                     get_char(_).
 
-pamietaj(X,Y,'t') :- assertz(xpozytywne(X,Y)).
-pamietaj(X,Y,'n') :- assertz(xnegatywne(X,Y)).
+pamietaj(X,'t') :- assertz(xpozytywne(X)).
+pamietaj(X,'n') :- assertz(xnegatywne(X)).
 
 start :- podejrzenie(X), !,
             format('~nMozesz byc chory na ~w', X),
