@@ -3,132 +3,132 @@
     xnegatywne/2.
 
 podejrzenie(grypa) :-
-        ma_objaw(pacjent,goraczka),
-        ma_objaw(pacjent,bol_gardla),
-        ma_objaw(pacjent,bol_glowy),
-        ma_objaw(pacjent,bol_miesni),
-        ma_objaw(pacjent,dreszcze),
-        ma_objaw(pacjent,katar),
-        ma_objaw(pacjent,kaszel).
+        ma_objaw(goraczka),
+        ma_objaw(bol_gardla),
+        ma_objaw(bol_glowy),
+        ma_objaw(bol_miesni),
+        ma_objaw(dreszcze),
+        ma_objaw(katar),
+        ma_objaw(kaszel).
 
 podejrzenie(przeziebienie) :-
-        ma_objaw(pacjent,bol_glowy),
-        ma_objaw(pacjent,bol_gardla),
-        ma_objaw(pacjent,kichanie),
-        ma_objaw(pacjent,katar),
-        ma_objaw(pacjent,dreszcze).
+        ma_objaw(bol_glowy),
+        ma_objaw(bol_gardla),
+        ma_objaw(kichanie),
+        ma_objaw(katar),
+        ma_objaw(dreszcze).
 
 podejrzenie(szkarlatyna) :-
-        ma_objaw(pacjent,bol_gardla),
-        ma_objaw(pacjent,wysypka),
-        ma_objaw(pacjent,goraczka),
-        ma_objaw(pacjent,biegunka),
-        ma_objaw(pacjent,obrzek_wezlow_chlonnych).
+        ma_objaw(bol_gardla),
+        ma_objaw(wysypka),
+        ma_objaw(goraczka),
+        ma_objaw(biegunka),
+        ma_objaw(obrzek_wezlow_chlonnych).
 
 podejrzenie(grypa_zoladkowa) :-
-        ma_objaw(pacjent,bol_brzucha),
-        ma_objaw(pacjent,wymioty),
-        ma_objaw(pacjent,goraczka),
-        ma_objaw(pacjent,bol_glowy),
-        ma_objaw(pacjent,biegunka).
+        ma_objaw(bol_brzucha),
+        ma_objaw(wymioty),
+        ma_objaw(goraczka),
+        ma_objaw(bol_glowy),
+        ma_objaw(biegunka).
 
 podejrzenie(nadcisnienie) :-
-        ma_objaw(pacjent,bol_glowy),
-        ma_objaw(pacjent,zmeczenie),
-        ma_objaw(pacjent,nerwowosc),
-        ma_objaw(pacjent,dusznosci),
-        ma_objaw(pacjent,lomotanie_serca).
+        ma_objaw(bol_glowy),
+        ma_objaw(zmeczenie),
+        ma_objaw(nerwowosc),
+        ma_objaw(dusznosci),
+        ma_objaw(lomotanie_serca).
 
 podejrzenie(rozyczka) :-
-        ma_objaw(pacjent,bol_glowy),
-        ma_objaw(pacjent,wysypka),
-        ma_objaw(pacjent,goraczka),
-        ma_objaw(pacjent,katar),
-        ma_objaw(pacjent,biegunka).
+        ma_objaw(bol_glowy),
+        ma_objaw(wysypka),
+        ma_objaw(goraczka),
+        ma_objaw(katar),
+        ma_objaw(biegunka).
 
 podejrzenie(goraczka_krwotoczna) :-
-        ma_objaw(pacjent,bol_glowy),
-        ma_objaw(pacjent,bol_brzucha),
-        ma_objaw(pacjent,bol_miesni),
-        ma_objaw(pacjent,obrzeki),
-        ma_objaw(pacjent,krawienie_blon_sluzowych).
+        ma_objaw(bol_glowy),
+        ma_objaw(bol_brzucha),
+        ma_objaw(bol_miesni),
+        ma_objaw(obrzeki),
+        ma_objaw(krawienie_blon_sluzowych).
 
 podejrzenie(goraczka_reumatyczna) :-
-        ma_objaw(pacjent,bol_stawow),
-        ma_objaw(pacjent,wysokie_OB),
-        ma_objaw(pacjent,leukocytoza),
-        ma_objaw(pacjent,wyoskie_CRP),
-        ma_objaw(pacjent,gozki_podskorne).
+        ma_objaw(bol_stawow),
+        ma_objaw(wysokie_OB),
+        ma_objaw(leukocytoza),
+        ma_objaw(wyoskie_CRP),
+        ma_objaw(gozki_podskorne).
 
 podejrzenie(bolerioza) :-
-        ma_objaw(pacjent,nudnosci),
-        ma_objaw(pacjent,wymioty),
-        ma_objaw(pacjent,uposledzenie_sluchu),
-        ma_objaw(pacjent,padaczka),
-        ma_objaw(pacjent,psychoza).
+        ma_objaw(nudnosci),
+        ma_objaw(wymioty),
+        ma_objaw(uposledzenie_sluchu),
+        ma_objaw(padaczka),
+        ma_objaw(psychoza).
 
 podejrzenie(mukowiscydoza) :-
-        ma_objaw(pacjent,kaszel),
-        ma_objaw(pacjent,dusznosci),
-        ma_objaw(pacjent,polipy_nosa),
-        ma_objaw(pacjent,obfite_stolce),
-        ma_objaw(pacjent,wypadanie_odbytu).
+        ma_objaw(kaszel),
+        ma_objaw(dusznosci),
+        ma_objaw(polipy_nosa),
+        ma_objaw(obfite_stolce),
+        ma_objaw(wypadanie_odbytu).
 
 podejrzenie(kwasica_ketonowa) :-
-        ma_objaw(pacjent,nadmierne_pragnienie),
-        ma_objaw(pacjent,oddech_kwasiczy),
-        ma_objaw(pacjent,zaburzenia_swiadomosci),
-        ma_objaw(pacjent,zaczerwienienia_policzkow),
-        ma_objaw(pacjent,zawroty).
+        ma_objaw(nadmierne_pragnienie),
+        ma_objaw(oddech_kwasiczy),
+        ma_objaw(zaburzenia_swiadomosci),
+        ma_objaw(zaczerwienienia_policzkow),
+        ma_objaw(zawroty).
 
 podejrzenie(mocznica) :-
-        ma_objaw(pacjent,drazliwosc),
-        ma_objaw(pacjent,sennosc),
-        ma_objaw(pacjent,pobudliwosc),
-        ma_objaw(pacjent,brak_laknienia),
-        ma_objaw(pacjent,wybroczyny).
+        ma_objaw(drazliwosc),
+        ma_objaw(sennosc),
+        ma_objaw(pobudliwosc),
+        ma_objaw(brak_laknienia),
+        ma_objaw(wybroczyny).
 
 podejrzenie(odra) :-
-        ma_objaw(pacjent,niezyt_nosa),
-        ma_objaw(pacjent,zapalenie_spojowek),
-        ma_objaw(pacjent,plamki_koplika),
-        ma_objaw(pacjent,sinica),
-        ma_objaw(pacjent,przyspieszenie_tetna).
+        ma_objaw(niezyt_nosa),
+        ma_objaw(zapalenie_spojowek),
+        ma_objaw(plamki_koplika),
+        ma_objaw(sinica),
+        ma_objaw(przyspieszenie_tetna).
 
 podejrzenie(tezec) :-
-        ma_objaw(pacjent,zaburzenia_czucia),
-        ma_objaw(pacjent,niepokoj),
-        ma_objaw(pacjent,skurcze_miesni),
-        ma_objaw(pacjent,drgawki),
-        ma_objaw(pacjent,dusznosc).
+        ma_objaw(zaburzenia_czucia),
+        ma_objaw(niepokoj),
+        ma_objaw(skurcze_miesni),
+        ma_objaw(drgawki),
+        ma_objaw(dusznosc).
 
 podejrzenie(ptasia_grypa) :-
-        ma_objaw(pacjent,zapalenie_spojowek),
-        ma_objaw(pacjent,wymioty),
-        ma_objaw(pacjent,bol_gardla),
-        ma_objaw(pacjent,biegunka),
-        ma_objaw(pacjent,kaszel).
+        ma_objaw(zapalenie_spojowek),
+        ma_objaw(wymioty),
+        ma_objaw(bol_gardla),
+        ma_objaw(biegunka),
+        ma_objaw(kaszel).
 
 podejrzenie(polio) :-
-        ma_objaw(pacjent,parestezje),
-        ma_objaw(pacjent,porazenie_miesni),
-        ma_objaw(pacjent,sztywnosc_karku),
-        ma_objaw(pacjent,goraczka),
-        ma_objaw(pacjent,bol_glowy).
+        ma_objaw(parestezje),
+        ma_objaw(porazenie_miesni),
+        ma_objaw(sztywnosc_karku),
+        ma_objaw(goraczka),
+        ma_objaw(bol_glowy).
 
 podejrzenie(ospa_wietrzna) :-
-        ma_objaw(pacjent,swedzenie),
-        ma_objaw(pacjent,wykwity),
-        ma_objaw(pacjent,bol_miesni),
-        ma_objaw(pacjent,goraczka),
-        ma_objaw(pacjent,biegunka).
+        ma_objaw(swedzenie),
+        ma_objaw(wykwity),
+        ma_objaw(bol_miesni),
+        ma_objaw(goraczka),
+        ma_objaw(biegunka).
 
 podejrzenie(gruzlica) :-
-        ma_objaw(pacjent,poty_nocne),
-        ma_objaw(pacjent,stan_podgoraczkowy),
-        ma_objaw(pacjent,krwioplucie),
-        ma_objaw(pacjent,utrata_masy_ciala),
-        ma_objaw(pacjent,oslabienie).
+        ma_objaw(poty_nocne),
+        ma_objaw(stan_podgoraczkowy),
+        ma_objaw(krwioplucie),
+        ma_objaw(utrata_masy_ciala),
+        ma_objaw(oslabienie).
 
 
 ma_objaw(X,Y) :- xpozytywne(X,Y), !.
