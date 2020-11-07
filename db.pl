@@ -123,25 +123,27 @@ podejrzenie(gruzlica) :-
 ma_objaw(Val):- nl, zadaj_pytanie('Czy ma Pan/Pani ',Val).
 
 postaw_diagnoze():-
-    nl, podejrzenie(Choroba),
-    !, nl,
-    write('Moja diagnoza to '),
-    write(Choroba), nl.
+        nl, podejrzenie(Choroba),
+        !, nl,
+        write('Moja diagnoza to '),
+        write(Choroba), nl.
 
 postaw_diagnoze():-
-    nl, write('Niestety nie wiem co to za choroba').
+        nl, write('Niestety nie wiem co to za choroba').
 
-zadaj_pytanie(Pytanie, Val):- known(Pytanie, Val, true),!.
-zadaj_pytanie(Pytanie, Val):- known(Pytanie, Val, false),!, fail.
+zadaj_pytanie(Pytanie, Val):- 
+        known(Pytanie, Val, true),!.
+zadaj_pytanie(Pytanie, Val):- 
+        known(Pytanie, Val, false),!, fail.
 
 zadaj_pytanie(Pytanie, Val):-
-    shell(clear),
-    write(Pytanie),write(Val) , write('? (t/n)'), nl,
-    read_line_to_codes(user_input,MenuCodes),
-    string_codes(Ans,MenuCodes),
-    !,
-    ((Ans="t", assert(known(Pytanie, Val, true)));
-    (assert(known(Pytanie, Val, false)),fail)).
+        shell(clear),
+        write(Pytanie),write(Val) , write('? (t/n)'), nl,
+        read_line_to_codes(user_input,MenuCodes),
+        string_codes(Ans,MenuCodes),
+        !,
+        ((Ans="t", assert(known(Pytanie, Val, true)));
+        (assert(known(Pytanie, Val, false)),fail)).
 
 start :-
         abolish(known/3),
