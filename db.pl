@@ -18,8 +18,13 @@ choroba(goraczka_krwotoczna, [bol_brzucha, bol_glowy, bol_miesni, obrzeki, krawi
 
 choroba(bolerioza, [nudnosci, wymioty, uposledzenie_sluchu, padaczka]).
 
-jest_w_liscie(H, [H|_]). 
+choroba(ch1, [a,d,b]).
+choroba(ch2, [b,a]).
+
+jest_w_liscie(H, [H|_]).
+
 jest_w_liscie(H, [_|T]) :- jest_w_liscie(H, T).
+
 jest_w_liscie(_, []) :- !, fail.
 
 jest_w_liscie(Elem, [H|T]) :-
@@ -27,11 +32,28 @@ jest_w_liscie(Elem, [H|T]) :-
   !,
   jest_w_liscie(Elem, T).
 
-% _ there because we want to return it as a list
-znajdz_chroby(_, Objaw) :-
+jest_sublista( [], _ ).
+
+jest_sublista( [X|XS], [X|XSS] ) :- jest_sublista( XS, XSS ).
+
+jest_sublista( [X|XS], [_|XSS] ) :- jest_sublista( [X|XS], XSS ).
+
+sprawdz_objawy(Choroba, ListaObjawow) :-
+        choroba(Choroba, ListaObjawowChoroby),
+        sort(ListaObjawowChoroby, SortedListaObjawowChoroby),
+        sort(ListaObjawow, SortedListaObjawow),
+        jest_sublista(SortedListaObjawow, SortedListaObjawowChoroby).
+
+sprawdz_objaw(Choroba, Objaw) :-
         choroba(Choroba, ListaObj),
-        member(Objaw, ListaObj),
-        write(Choroba).
+        member(Objaw, ListaObj).
+
+znajdz_choroby(L, ListaObjawow) :-
+        is_list(ListaObjawow), !,
+        bagof(Choroba, sprawdz_objawy(Choroba, ListaObjawow), L).
+
+znajdz_choroby(L, Objaw) :-
+        bagof(Choroba, sprawdz_objaw(Choroba, Objaw), L).
 
 lista_objawow(L) :-
         findall(P, objaw(pacjent, P), L).
@@ -78,4 +100,6 @@ clear :-
         abolish(objaw, 2),
         abolish(wiek, 2),
         abolish(temperatura, 2).
+
+
 
