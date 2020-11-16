@@ -36,6 +36,17 @@ ocen(grypa, Wynik, ListaObjawow) :-
 ocen(grypa, Wynik, _) :-
         Wynik = 30.
 
+znajdz_chorobe(MyList, HighMatchNum, K) :-
+    aggregate_all(max(N, Key),
+              (   choroba(Key, List),
+                  wspolne_objawy(MyList, List, N)
+              ),
+              max(HighMatchNum, K)).
+
+wspolne_objawy(MyList, List, N) :-
+    intersection(MyList, List, L),
+    length(L, N).
+
 jest_w_liscie(H, [H|_]).
 
 jest_w_liscie(H, [_|T]) :- jest_w_liscie(H, T).
