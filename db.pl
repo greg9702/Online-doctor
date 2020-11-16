@@ -2,24 +2,39 @@
    dynamic(temperatura/2),
    dynamic(wiek/2).
 
-choroba(grypa,  [goraczka(wysoka_goraczka), bol_gardla, bol_glowy, bol_miesni, dreszcze, katar, kaszel]).
+choroba(grypa, [goraczka(wysoka_goraczka), bol_gardla, bol_glowy, bol_miesni, dreszcze, katar, kaszel]).
 
 choroba(przeziebienie, [bol_glowy, bol_gardla, kichanie, katar, dreszcze]).
 
-choroba(szkarlatyna, [bol_gardla, wysypka, goraczka(wysoka_goraczka), biegunka, obrzek_wezlow_chlonnych]).
+% choroba(szkarlatyna, [bol_gardla, wysypka, goraczka(wysoka_goraczka), biegunka, obrzek_wezlow_chlonnych]).
 
-choroba(grypa_zoladkowa, [bol_brzucha, wymioty, goraczka(stan_podgoraczkowy), bol_glowy, biegunka]).
+% choroba(grypa_zoladkowa, [bol_brzucha, wymioty, goraczka(stan_podgoraczkowy), bol_glowy, biegunka]).
 
-choroba(nadcisnienie, [bol_glowy, zmeczenie, nerwowosc, dusznosci, lomotanie_serca, wiek_pacjenta(podeszly_wiek)]).
+% choroba(nadcisnienie, [bol_glowy, zmeczenie, nerwowosc, dusznosci, lomotanie_serca, wiek_pacjenta(podeszly_wiek)]).
 
-choroba(rozyczka, [bol_glowy, wysypka, goraczka(wysoka_goraczka), katar, biegunka]).
+% choroba(rozyczka, [bol_glowy, wysypka, goraczka(wysoka_goraczka), katar, biegunka]).
 
-choroba(goraczka_krwotoczna, [bol_brzucha, bol_glowy, bol_miesni, obrzeki, krawienie_blon_sluzowych]).
+% choroba(goraczka_krwotoczna, [bol_brzucha, bol_glowy, bol_miesni, obrzeki, krawienie_blon_sluzowych]).
 
-choroba(bolerioza, [nudnosci, wymioty, uposledzenie_sluchu, padaczka]).
+% choroba(bolerioza, [nudnosci, wymioty, uposledzenie_sluchu, padaczka]).
 
 choroba(ch1, [a,d,b]).
 choroba(ch2, [b,a]).
+
+ocen(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), bol_glowy], SortedLista),
+        jest_sublista(SortedLista, ListaObjawowSorted), !,
+        Wynik = 80.
+
+ocen(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka)], SortedLista),
+        jest_sublista(SortedLista, ListaObjawowSorted), !,
+        Wynik = 60.
+
+ocen(grypa, Wynik, _) :-
+        Wynik = 30.
 
 jest_w_liscie(H, [H|_]).
 
