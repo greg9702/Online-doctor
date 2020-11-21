@@ -80,6 +80,18 @@ znajdz_choroby(L, ListaObjawow) :-
 znajdz_choroby(L, Objaw) :-
         bagof(Choroba, sprawdz_objaw(Choroba, Objaw), L).
 
+% sprawdza czy podany objaw lub lista objawow pasuje dokladnie do listy objawow ktorejs choroby
+takie_same_objawy(Choroba, ListaObjawow) :-
+        choroba(Choroba, ListaObjawowChoroby),
+        sort(ListaObjawowChoroby, SortedListaObjawowChoroby),
+        sort(ListaObjawow, SortedListaObjawow),
+        SortedListaObjawow = SortedListaObjawowChoroby.
+
+% wykorzystujac takie_same_objawy znajduje choroby dokladnie pasujace do objawow
+znajdz_dopasowane_choroby(L, ListaObjawow) :-
+        is_list(ListaObjawow), !,
+        bagof(Choroba, takie_same_objawy(Choroba, ListaObjawow), L).
+
 % zwraca liste wszystkich objawow jakie ma pacjent
 lista_objawow_pacjenta_pacjenta(L) :-
         findall(P, objaw(pacjent, P), L).
@@ -112,6 +124,10 @@ pierwszy_filter(X) :-
         lista_objawow_pacjenta(L),
         znajdz_choroby(X, L).
 
+drugi_filter(X) :-
+        lista_objawow_pacjenta(L),
+        znajdz_dopasowane_choroby(X, L).
+
 % zwrca liste wszystkich chorob
 lista_chorob(L) :-
         findall(P, choroba(P, _), L).
@@ -124,8 +140,6 @@ lista_objawow(X) :-
 
 % process(H) :-
         % write(H), nl.
-% drugi_filter(_) :-
-%         write('[II] TODO'), nl.
 
 % trzeci_filter(_) :-
 %         write('[III] TODO'), nl.
@@ -153,8 +167,6 @@ postaw_diagnoze :-
         write('[I] Pacjent potencjalnie choruje na: '), write(L),
 
         % 2nd filter
-        % tutaj bedziemy sprawdzac czy jakas choroba dokladnie pasuje do objawow
-        % TODO
         % drugi_filter(L).
 
         % 3rd filter
