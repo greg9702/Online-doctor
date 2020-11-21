@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  client:
+    container_name: "prolog-client"
+    build: prolog-client/.
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    volumes:
+      - "./prolog-client:/app"
+      - "/app/node_modules"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+  server:
+    container_name: "prolog-server"
+    build: .
+    stdin_open: true
+    ports:
+        - "8080:8080"

@@ -112,6 +112,18 @@ pierwszy_filter(X) :-
         lista_objawow_pacjenta(L),
         znajdz_choroby(X, L).
 
+% zwrca liste wszystkich chorob
+lista_chorob(L) :-
+        findall(P, choroba(P, _), L).
+
+% zwraca wszystkie mozliwe objawy
+lista_objawow(X) :-
+        % TODO
+        % findall(P, choroba(_, P), L),
+        X = [b,c,d,e]. % tutaj chcemy zwracac tylko typy proste
+
+% process(H) :-
+        % write(H), nl.
 % drugi_filter(_) :-
 %         write('[II] TODO'), nl.
 
@@ -126,6 +138,7 @@ debug_bootstrap :-
         assert(temperatura(pacjent, 39)).
 
 postaw_diagnoze :-
+
         % debug data
         debug_bootstrap,
 

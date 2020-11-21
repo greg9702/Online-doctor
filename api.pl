@@ -11,9 +11,13 @@
 :- http_handler(root(api/symptoms), getAllSymptoms, []).
 :- http_handler(root(api/diagnose), getDiagnose, []).
 
+:- set_setting(http:cors, [*]).
 
 getAllSymptoms(Request) :-
-    reply_json(json([msg="all symptoms"])).
+    option(method(get), Request),
+    cors_enable(),
+    lista_objawow(L),
+    reply_json(json([all_symptoms=L])).
 
 getDiagnose(Request) :-
     reply_json(json([msg="diagnose"])).
