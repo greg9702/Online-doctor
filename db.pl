@@ -93,7 +93,7 @@ znajdz_dopasowane_choroby(L, ListaObjawow) :-
         bagof(Choroba, takie_same_objawy(Choroba, ListaObjawow), L).
 
 % zwraca liste wszystkich objawow jakie ma pacjent
-lista_objawow_pacjenta_pacjenta(L) :-
+lista_objawow_pacjenta(L) :-
         findall(P, objaw(pacjent, P), L).
 
 % predykaty dodajace "objawy" na podstawie parametrow wejsciowych
@@ -134,9 +134,9 @@ lista_chorob(L) :-
 
 % zwraca wszystkie mozliwe objawy
 lista_objawow(X) :-
-        % TODO
-        % findall(P, choroba(_, P), L),
-        X = [b,c,d,e]. % tutaj chcemy zwracac tylko typy proste
+        findall(Z, choroba(X,Z),L),
+        flatten(L,A),
+        sort(A,X).
 
 % process(H) :-
         % write(H), nl.
