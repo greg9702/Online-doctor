@@ -2,51 +2,8 @@
    dynamic(temperatura/2),
    dynamic(wiek/2).
 
-choroba(grypa, [goraczka(wysoka_goraczka), bol_gardla, bol_glowy, bol_miesni, dreszcze, katar, kaszel]).
-
-choroba(przeziebienie, [bol_glowy, bol_gardla, kichanie, katar, dreszcze]).
-
-% choroba(szkarlatyna, [bol_gardla, wysypka, goraczka(wysoka_goraczka), biegunka, obrzek_wezlow_chlonnych]).
-
-% choroba(grypa_zoladkowa, [bol_brzucha, wymioty, goraczka(stan_podgoraczkowy), bol_glowy, biegunka]).
-
-% choroba(nadcisnienie, [bol_glowy, zmeczenie, nerwowosc, dusznosci, lomotanie_serca, wiek_pacjenta(podeszly_wiek)]).
-
-% choroba(rozyczka, [bol_glowy, wysypka, goraczka(wysoka_goraczka), katar, biegunka]).
-
-% choroba(goraczka_krwotoczna, [bol_brzucha, bol_glowy, bol_miesni, obrzeki, krawienie_blon_sluzowych]).
-
-% choroba(bolerioza, [nudnosci, wymioty, uposledzenie_sluchu, padaczka]).
-
-choroba(ch1, [a,d,b]).
-choroba(ch2, [b,a]).
-
-ocen(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
-        sort([goraczka(wysoka_goraczka), bol_glowy], SortedLista),
-        jest_sublista(SortedLista, ListaObjawowSorted), !,
-        Wynik = 80.
-
-ocen(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
-        sort([goraczka(wysoka_goraczka)], SortedLista),
-        jest_sublista(SortedLista, ListaObjawowSorted), !,
-        Wynik = 60.
-
-ocen(grypa, Wynik, _) :-
-        Wynik = 30.
-
-znajdz_chorobe(MyList, HighMatchNum, K) :-
-    aggregate_all(max(N, Key),
-              (   choroba(Key, List),
-                  wspolne_objawy(MyList, List, N)
-              ),
-              max(HighMatchNum, K)).
-
-wspolne_objawy(MyList, List, N) :-
-    intersection(MyList, List, L),
-    length(L, N).
-
+%%%%%%%%%%%%%%%%%%%%%%% OGOLNE %%%%%%%%%%%%%%%%%%%%%%%%%
+% sprawdza czy dany element jest w liscie
 jest_w_liscie(H, [H|_]).
 
 jest_w_liscie(H, [_|T]) :- jest_w_liscie(H, T).
@@ -58,12 +15,53 @@ jest_w_liscie(Elem, [H|T]) :-
   !,
   jest_w_liscie(Elem, T).
 
-jest_sublista( [], _ ).
+% sprawdza czy lista jest sublista drugiej listy
+jest_sublista([], _ ).
 
-jest_sublista( [X|XS], [X|XSS] ) :- jest_sublista( XS, XSS ).
+jest_sublista([X|XS], [X|XSS]) :- jest_sublista(XS, XSS).
 
-jest_sublista( [X|XS], [_|XSS] ) :- jest_sublista( [X|XS], XSS ).
+jest_sublista([X|XS], [_|XSS]) :- jest_sublista([X|XS], XSS).
 
+
+%%%%%%%%%%%%%%%%%%%%%%%% BAZA %%%%%%%%%%%%%%%%%%%%%%%%%%
+% predykaty bazowe
+choroba(ch1, [a(x),d,b,e]).
+
+choroba(ch2, [b,a(x)]).
+
+choroba(ch3, [g,a(y),c,b]).
+
+% ocenia chrobe na podstawie listy objawow
+ocen_chorobe(ch1, Wynik, ListaObjawow) :-
+        % TODO move sort to jest_sublista
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([a(x), e], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 80.
+
+ocen_chorobe(ch1, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([b, a(x)], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 60.
+
+% wartosc domyslna dla wszystkich pozostalych przpyadkow
+ocen_chorobe(_, Wynik, _) :-
+        Wynik = 50.
+
+% zwraca chorobe, ktora ma obecnie najwiecej objawow wspolnych
+znajdz_chorobe(MyList, HighMatchNum, K) :-
+    aggregate_all(max(N, Key),
+              (   choroba(Key, List),
+                  wspolne_objawy(MyList, List, N)
+              ),
+              max(HighMatchNum, K)).
+
+wspolne_objawy(MyList, List, N) :-
+    intersection(MyList, List, L),
+    length(L, N).
+
+% sprawdza czy podany objaw lub list objawow znajduje sie w liscie choroby
 sprawdz_objawy(Choroba, ListaObjawow) :-
         choroba(Choroba, ListaObjawowChoroby),
         sort(ListaObjawowChoroby, SortedListaObjawowChoroby),
@@ -74,6 +72,7 @@ sprawdz_objaw(Choroba, Objaw) :-
         choroba(Choroba, ListaObj),
         member(Objaw, ListaObj).
 
+% zwraca list chorob ktora pasuje do podanego pojedynczego objawu lub listy 
 znajdz_choroby(L, ListaObjawow) :-
         is_list(ListaObjawow), !,
         bagof(Choroba, sprawdz_objawy(Choroba, ListaObjawow), L).
@@ -81,9 +80,11 @@ znajdz_choroby(L, ListaObjawow) :-
 znajdz_choroby(L, Objaw) :-
         bagof(Choroba, sprawdz_objaw(Choroba, Objaw), L).
 
+% zwraca liste wszystkich objawow jakie ma pacjent
 lista_objawow(L) :-
         findall(P, objaw(pacjent, P), L).
 
+% predykaty dodajace "objawy" na podstawie parametrow wejsciowych
 process_wiek :-
         wiek(pacjent, X),
         X > 50,
@@ -92,35 +93,63 @@ process_wiek :-
 process_wiek.
 
 process_goraczka :-
-        wiek(pacjent, X),
+        temperatura(pacjent, X),
         X > 38, !,
-        assert(objaw(pacjent, wiek_pacjenta(wysoka_goraczka))).
+        assert(objaw(pacjent, goraczka(wysoka_goraczka))).
 
 process_goraczka :-
-        wiek(pacjent, X),
+        temperatura(pacjent, X),
         X > 37, !,
         assert(objaw(pacjent, goraczka(stan_podgoraczkowy))).
 
 process_goraczka.
 
-process_input :-
+process_wejscie :-
         process_wiek,
         process_goraczka.
 
-debug_bootstrap :-
-        % debug data, will get this from application
-        assert(objaw(pacjent, bol_brzucha)),
-        % assert(temperatura(pacjent, 38)),
-        assert(wiek(pacjent, 40)),
-        assert(temperatura(pacjent, 39)),
+pierwszy_filter(X) :-
+        lista_objawow(L),
+        znajdz_choroby(X, L).
 
-        process_input,        
+% drugi_filter(_) :-
+%         write('[II] TODO'), nl.
+
+% trzeci_filter(_) :-
+%         write('[III] TODO'), nl.
+
+% debugowe przykladowe dane
+debug_bootstrap :-
+        assert(objaw(pacjent, a(x))),
+        assert(objaw(pacjent, b)),
+        assert(wiek(pacjent, 40)),
+        assert(temperatura(pacjent, 39)).
+
+postaw_diagnoze :-
+        % debug data
+        debug_bootstrap,
+
+        % process_wejscie,   
 
         % % debug print
         lista_objawow(X),
-        write('Pacjent posiada objawy: '), write(X).
-        clear.
+        write('Pacjent posiada objawy: '), write(X), nl,
 
+        % 1st filter
+        pierwszy_filter(L),
+        write('[I] Pacjent potencjalnie choruje na: '), write(L),
+
+        % 2nd filter
+        % tutaj bedziemy sprawdzac czy jakas choroba dokladnie pasuje do objawow
+        % TODO
+        % drugi_filter(L).
+
+        % 3rd filter
+        % tutaj bedziemy uzywac ocen_chorobe, by znalezc ta o najwyzszym wyniku
+        % TODO
+        % trzeci_filter(L).
+
+        clear.
 
 clear :-
         abolish(objaw, 2),
