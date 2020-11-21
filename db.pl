@@ -81,7 +81,7 @@ znajdz_choroby(L, Objaw) :-
         bagof(Choroba, sprawdz_objaw(Choroba, Objaw), L).
 
 % zwraca liste wszystkich objawow jakie ma pacjent
-lista_objawow(L) :-
+lista_objawow_pacjenta_pacjenta(L) :-
         findall(P, objaw(pacjent, P), L).
 
 % predykaty dodajace "objawy" na podstawie parametrow wejsciowych
@@ -109,7 +109,7 @@ process_wejscie :-
         process_goraczka.
 
 pierwszy_filter(X) :-
-        lista_objawow(L),
+        lista_objawow_pacjenta(L),
         znajdz_choroby(X, L).
 
 % drugi_filter(_) :-
@@ -132,7 +132,7 @@ postaw_diagnoze :-
         % process_wejscie,   
 
         % % debug print
-        lista_objawow(X),
+        lista_objawow_pacjenta(X),
         write('Pacjent posiada objawy: '), write(X), nl,
 
         % 1st filter
