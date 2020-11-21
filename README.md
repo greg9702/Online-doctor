@@ -21,4 +21,6 @@ There are currently defined two API endpoints:
 ```
 docker-compose up --build
 ```
+Then open `http://localhost:3000/` in your web browser.
+
 > Keep in mind that server side files are copied into container during the build, because of that after any changes applied to the prolog code container must be recreated. Using local prolog interpreter for debugging is recommended.
