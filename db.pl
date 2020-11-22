@@ -136,7 +136,11 @@ lista_chorob(L) :-
 lista_objawow(X) :-
         findall(Z, choroba(X,Z),L),
         flatten(L,A),
-        sort(A,X).
+        filter_list_atomic(A,B),
+        sort(B,X).
+
+filter_list_atomic(In, Out) :-
+        include(atomic(), In, Out).
 
 % process(H) :-
         % write(H), nl.
