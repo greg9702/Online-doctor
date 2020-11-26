@@ -149,6 +149,7 @@ filter_list_atomic(In, Out) :-
 %         write('[III] TODO'), nl.
 
 % debugowe przykladowe dane
+% TODO assert -> assertz
 debug_bootstrap :-
         assert(objaw(pacjent, a(x))),
         assert(objaw(pacjent, b)),
