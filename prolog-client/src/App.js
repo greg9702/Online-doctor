@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import FormTable from './FormTable.js';
-import ResultWindow from './ResultWindow.js';
+import FormTable from './LayoutComponents/FormTable.js';
+import ResultWindow from './LayoutComponents/ResultWindow.js';
 
 const stageEnum = {
   FORM: 'form',

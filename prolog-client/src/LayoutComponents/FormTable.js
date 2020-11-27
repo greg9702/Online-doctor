@@ -1,6 +1,6 @@
 import React from 'react';
-import './FormTable.css';
-import YesNoQuestion from './YesNoQuestion';
+import './LayoutComponent.css';
+import YesNoQuestion from './../QuestionComponents/YesNoQuestion.js';
 
 class FormTable extends React.Component {
   constructor() {
@@ -79,30 +79,32 @@ class FormTable extends React.Component {
   componentDidMount() {
     // fetch api here
     this.sendGetAllSymptoms();
-    console.log('Form Table loaded');
   }
 
   componentWillUnmount() {
-    // this.setState({symptomList: []});
-    console.log('Form Table unloaded');
+    this.setState({symptomList: []});
   }
 
   render() {
     return (
-      <div className="questions-table">
+      <div className="table">
         <form onSubmit={this.handleSubmit}>
-          <div className="questions-table-title">
-            <h1 className="questions-table-title-text">Odpowiedz na pytania</h1>
+          <div className="table-title">
+            <h1 className="table-title-text">Odpowiedz na pytania</h1>
           </div>
           <div className="header-spacing">
           </div>
-          <div className="question-wrapper" >
-            <label className="question-wrapper-text">Aasdas asdfa</label>
-            <input className="questions-answer-text" type="text" name="wiek"></input>
+          <div className="row-wrapper" >
+            <label className="row-wrapper-text">Aasdas asdfa</label>
+            <input className="row-answer-text" type="text" name="wiek"></input>
           </div>
           
+          {this.state.symptomList.map((item, index) => {
+              return <YesNoQuestion item={item} index={index}/>
+            } 
+          )}
 
-          <button className="questions-table-send-button">Send</button>
+          <button className="table-button">Send</button>
         </form>
       </div>
     );

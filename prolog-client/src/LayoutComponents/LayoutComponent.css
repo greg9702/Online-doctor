@@ -1,4 +1,4 @@
-.questions-table {
+.table {
     background-color: rgb(190, 197, 216);
     width: 50%;
     position: relative;
@@ -6,7 +6,7 @@
     border-radius: 25px;
 }
 
-.questions-answer-text {
+.row-answer-text {
     transform: scale(1.7);
     width: 12%;
     font-size: 12px;
@@ -22,7 +22,7 @@
     border-bottom: 1px solid #888;
 }
 
-.questions-table-title {
+.table-title {
     border: 4px solid rgb(118, 167, 21);
     border-radius: 25px;
     text-align: center;
@@ -31,12 +31,12 @@
     font-family: 'Open Sans', sans-serif;
 }
 
-.question-wrapper {
+.row-wrapper {
     border-bottom: 1px solid #888;
     padding: 20px;    
 }
 
-.questions-table-send-button {
+.table-button {
     position: sticky;
     left: 45%;
     margin-top: 30px;
