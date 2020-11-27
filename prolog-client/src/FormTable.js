@@ -15,19 +15,37 @@ class FormTable extends React.Component {
   }
 
   handleSubmit(event) {
+
     const data = new FormData(event.target);
+
+    let dataToSend = {'positive_symptoms': []};
+
+    for (var x of data) {
+      if (this.state.symptomList.includes(x[0]) ) {
+        if (x[1] === 'yes') {
+          dataToSend['positive_symptoms'].push(x[0])
+        }
+      } else {
+        dataToSend[x[0]] = x[1]
+      }
+    }
+
+    console.log(dataToSend);
 
     const requestOptions = {
       method: 'POST',
-      body: JSON.stringify(data)
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToSend),
     };
 
     fetch(this.state.serverAddress + this.state.postApi, requestOptions)
     .then((response) => {
       if (response.status === 200) {
         response.json().then(data => {
-          console.log(data);
-          this.setState({ data });
+          console.log('received response: ', data);
         });
       } else {
         throw Error(response.statusText)
@@ -40,6 +58,7 @@ class FormTable extends React.Component {
   }
 
   sendGetAllSymptoms = () => {
+
     fetch(this.state.serverAddress + this.state.getApi)
     .then((response) => {
       if (response.status === 200) {
@@ -53,38 +72,47 @@ class FormTable extends React.Component {
     }).catch(error => {
       console.log("Error sending request")
     })
+    
   }
 
   componentDidMount() {
     // fetch api here
     this.sendGetAllSymptoms();
-    console.log("XDDD");
+    console.log('Form Table loaded');
   }
 
   componentWillUnmount() {
     // this.setState({symptomList: []});
+    console.log('Form Table unloaded');
   }
 
   render() {
     return (
-      <div className="table">
+      <div className="questions-table">
         <form onSubmit={this.handleSubmit}>
-          <h1 className="table-title">TITLE</h1>
-
-          <div className="question-wrapper">
-            <label>Ile masz lat</label>
-            <input type="text" name="wiek"></input>
+          <div className="questions-table-title">
+            <h1 className="questions-table-title-text">Odpowiedz na pytania</h1>
+          </div>
+          <div className="header-spacing">
+          </div>
+          <div className="question-wrapper" >
+            <label className="question-wrapper-text">Aasdas asdfa</label>
+            <input className="questions-answer-text" type="text" name="wiek"></input>
           </div>
           
           { this.state.symptomList.map((item, index) => (
             <div className="question-wrapper" key={ index }>
-              <label>Do you agree { item }</label>
-              <input type="radio" name={ item } value="yes"/>
-              <input type="radio" name={ item } value="no"/>
+              <label className="question-wrapper-text">Do you agree { item }</label>
+              <span className="question-answer-checkbox">
+                <span className="question-answer-checkbox-label">Tak</span>
+                <input className="checkbox-bullet" type="radio" name={ item } value="yes"/>
+                <span className="question-answer-checkbox-label">Nie</span>
+                <input className="checkbox-bullet" type="radio" name={ item } value="no"/>
+              </span>
             </div>
             )
           )}
-          <button>Send</button>
+          <button className="questions-table-send-button">Send</button>
         </form>
       </div>
     );

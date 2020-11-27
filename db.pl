@@ -181,6 +181,10 @@ postaw_diagnoze :-
 
         clear.
 
+debug_diagnose(L, X) :-
+        znajdz_choroby(L, X).
+
+
 clear :-
         abolish(objaw, 2),
         abolish(wiek, 2),

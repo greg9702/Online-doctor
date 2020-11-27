@@ -3,6 +3,8 @@
 :- use_module(library(http/http_cors)).
 :- use_module(library(http/http_json)).
 :- use_module(library(http/json_convert)).
+:- use_module(library(http/http_log)).
+:- use_module(library(http/http_client)).
 
 :- initialization
     http_server([port(8080)]),
@@ -22,11 +24,16 @@ getAllSymptoms(Request) :-
 
 getDiagnose(Request) :-
     option(method(options), Request), !,
-    cors_enable(Request, [ methods([post])]),
+    http_log('~w ',['getDiagnose options']),
+    cors_enable(Request, [methods([post])]),
     format('~n').
 
 getDiagnose(Request) :-
+    http_log('~w\n', ['======= getDiagnose post =======']),
     cors_enable(),
-    write('getDiagnose'),
-    reply_json(json([msg="diagnose"])).
+    http_read_data(Request, Data, []),
+    http_log('Data: ~w\n', [Data]),
+
+    debug_diagnose(L, [e]),
+    reply_json(json([diagnose=L])).
 
