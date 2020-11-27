@@ -1,0 +1,19 @@
+.question-wrapper-text {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+}
+
+.question-answer-checkbox-label {
+    font-family: 'Open Sans', sans-serif;
+    font-style: italic;
+}
+
+.question-answer-checkbox {
+    position: absolute;    
+    left: 80%;
+}
+
+.checkbox-bullet {
+    transform: scale(1.7);
+    margin: 10px;
+}

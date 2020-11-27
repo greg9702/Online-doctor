@@ -1,5 +1,6 @@
 import React from 'react';
 import './FormTable.css';
+import YesNoQuestion from './YesNoQuestion';
 
 class FormTable extends React.Component {
   constructor() {
@@ -15,9 +16,7 @@ class FormTable extends React.Component {
   }
 
   handleSubmit(event) {
-
     const data = new FormData(event.target);
-
     let dataToSend = {'positive_symptoms': []};
 
     for (var x of data) {
@@ -41,11 +40,15 @@ class FormTable extends React.Component {
       body: JSON.stringify(dataToSend),
     };
 
+    // TODO
+    let resultName = "XXXXX";
+
     fetch(this.state.serverAddress + this.state.postApi, requestOptions)
     .then((response) => {
       if (response.status === 200) {
         response.json().then(data => {
           console.log('received response: ', data);
+          // resultName = data["diagnose"][0];
         });
       } else {
         throw Error(response.statusText)
@@ -53,12 +56,11 @@ class FormTable extends React.Component {
     }).catch(error => {
       console.log("Error sending request")
     })
-
+    this.props.handler(resultName);
     event.preventDefault();
   }
 
   sendGetAllSymptoms = () => {
-
     fetch(this.state.serverAddress + this.state.getApi)
     .then((response) => {
       if (response.status === 200) {
@@ -72,7 +74,6 @@ class FormTable extends React.Component {
     }).catch(error => {
       console.log("Error sending request")
     })
-    
   }
 
   componentDidMount() {
@@ -100,18 +101,7 @@ class FormTable extends React.Component {
             <input className="questions-answer-text" type="text" name="wiek"></input>
           </div>
           
-          { this.state.symptomList.map((item, index) => (
-            <div className="question-wrapper" key={ index }>
-              <label className="question-wrapper-text">Do you agree { item }</label>
-              <span className="question-answer-checkbox">
-                <span className="question-answer-checkbox-label">Tak</span>
-                <input className="checkbox-bullet" type="radio" name={ item } value="yes"/>
-                <span className="question-answer-checkbox-label">Nie</span>
-                <input className="checkbox-bullet" type="radio" name={ item } value="no"/>
-              </span>
-            </div>
-            )
-          )}
+
           <button className="questions-table-send-button">Send</button>
         </form>
       </div>

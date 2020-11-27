@@ -1,20 +1,51 @@
 import React from 'react';
 import './App.css';
 import FormTable from './FormTable.js';
+import ResultWindow from './ResultWindow.js';
+
+const stageEnum = {
+  FORM: 'form',
+  RESULT: 'result',
+}
 
 class App extends React.Component {
 
-  state = {
+  constructor() {
+    super();
+
+    this.state = {
+      stage: stageEnum.FORM,
+      result: null,
+    };
+
+    this.setStartHanlder = this.setStartStageHandle.bind(this);
+    this.setResultHanlder = this.setResultStageHandle.bind(this);
   }
 
-  sorter(checkedItem){
-    this.setState({checked:checkedItem});
+  setStartStageHandle() {
+    this.setState({result: null});
+    this.setState({stage: stageEnum.FORM});
+  }
+
+  setResultStageHandle(result) {
+    console.log(result);
+    this.setState({result: result});
+    this.setState({stage: stageEnum.RESULT});
   }
 
   render() {
+
+    let appContent;
+
+    if (this.state.stage === stageEnum.FORM) {
+      appContent = <FormTable handler={this.setResultHanlder}/>
+    } else {
+      appContent = <ResultWindow result={this.state.result} handler={this.setStartHanlder} />
+    }
+
     return (
       <div>
-        <FormTable />
+        {appContent}
       </div>
     )
   }
