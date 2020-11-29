@@ -7,15 +7,12 @@ class ResultWindow extends React.Component {
     return (
       <div className="table">
         <div className="table-title">
-          <h1 className="table-title-text">Wynik</h1>
+          <h1 className="table-title-text">Błąd</h1>
         </div>
         <div className="header-spacing">
         </div>
         <div className="row-wrapper" >
-          {this.props.result !== null
-          ? <label className="row-wrapper-text">Moja diagnoza to {this.props.result}</label>
-          : <label className="row-wrapper-text">Nie udało się postawić diagnozy</label>
-          }
+          <label className="row-wrapper-text">Wystąpił błąd, proszę spróbować ponownie</label>
         </div>
         <button className="table-button" onClick={this.props.handler}>Back</button>
       </div>

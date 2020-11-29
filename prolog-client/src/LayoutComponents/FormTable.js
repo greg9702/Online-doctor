@@ -17,15 +17,16 @@ class FormTable extends React.Component {
 
   handleSubmit(event) {
     const data = new FormData(event.target);
-    let dataToSend = {'positive_symptoms': []};
+    let dataToSend = {'PositiveSymptoms': []};
 
     for (var x of data) {
       if (this.state.symptomList.includes(x[0]) ) {
         if (x[1] === 'yes') {
-          dataToSend['positive_symptoms'].push(x[0])
+          dataToSend['PositiveSymptoms'].push(x[0])
         }
       } else {
-        dataToSend[x[0]] = x[1]
+        console.log('Do nothiung');
+        // dataToSend[x[0]] = x[1]
       }
     }
 
@@ -42,21 +43,27 @@ class FormTable extends React.Component {
 
     // TODO
     let resultName = "XXXXX";
-
+    console.log('resultName before:', resultName);
     fetch(this.state.serverAddress + this.state.postApi, requestOptions)
     .then((response) => {
       if (response.status === 200) {
         response.json().then(data => {
           console.log('received response: ', data);
-          // resultName = data["diagnose"][0];
+          if (data['diagnose']) {
+            resultName = data['diagnose'][0];
+            this.props.handler(resultName);
+          } else {
+            this.props.handler(null);
+          }
         });
       } else {
         throw Error(response.statusText)
       }
     }).catch(error => {
+      this.props.errorHanlder();
       console.log("Error sending request")
     })
-    this.props.handler(resultName);
+    console.log('resultName after:', resultName);
     event.preventDefault();
   }
 
@@ -72,6 +79,7 @@ class FormTable extends React.Component {
         throw Error(response.statusText)
       }
     }).catch(error => {
+      this.props.errorHanlder();
       console.log("Error sending request")
     })
   }
@@ -94,10 +102,10 @@ class FormTable extends React.Component {
           </div>
           <div className="header-spacing">
           </div>
-          <div className="row-wrapper" >
+          {/* <div className="row-wrapper" >
             <label className="row-wrapper-text">Aasdas asdfa</label>
             <input className="row-answer-text" type="text" name="wiek"></input>
-          </div>
+          </div> */}
           
           {this.state.symptomList.map((item, index) => {
               return <YesNoQuestion item={item} index={index}/>
