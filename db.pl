@@ -49,6 +49,15 @@ ocen_chorobe(ch1, Wynik, ListaObjawow) :-
 ocen_chorobe(_, Wynik, _) :-
         Wynik = 50.
 
+
+% Zwraca chorobe ktora jest najwyzej oceniana poprzez predykat ocen_chorobe.
+znajdz_najwyzej_oceniana_chorobe(ListaObjawowPacjenta, Wynik, K) :-
+    aggregate_all(max(N, Key),
+              (   choroba(Key, List),
+                  ocen_chorobe(Key,N,ListaObjawowPacjenta)
+              ),
+              max(Wynik, K)).
+
 % zwraca chorobe, ktora ma obecnie najwiecej objawow wspolnych
 znajdz_chorobe(MyList, HighMatchNum, K) :-
     aggregate_all(max(N, Key),
@@ -128,6 +137,10 @@ drugi_filter(X) :-
         lista_objawow_pacjenta(L),
         znajdz_dopasowane_choroby(X, L).
 
+trzeci_filter(Wynik,Choroba) :-
+        lista_objawow_pacjenta(L),
+        znajdz_najwyzej_oceniana_chorobe(L, Wynik, Choroba).
+
 % zwrca liste wszystkich chorob
 lista_chorob(L) :-
         findall(P, choroba(P, _), L).
@@ -144,9 +157,6 @@ filter_list_atomic(In, Out) :-
 
 % process(H) :-
         % write(H), nl.
-
-% trzeci_filter(_) :-
-%         write('[III] TODO'), nl.
 
 % debugowe przykladowe dane
 % TODO assert -> assertz
@@ -175,8 +185,6 @@ postaw_diagnoze :-
         % drugi_filter(L).
 
         % 3rd filter
-        % tutaj bedziemy uzywac ocen_chorobe, by znalezc ta o najwyzszym wyniku
-        % TODO
         % trzeci_filter(L).
 
         clear.
