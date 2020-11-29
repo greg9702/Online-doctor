@@ -17,12 +17,12 @@ class FormTable extends React.Component {
 
   handleSubmit(event) {
     const data = new FormData(event.target);
-    let dataToSend = {'PositiveSymptoms': []};
+    let dataToSend = {'positive_symptoms': []};
 
     for (var x of data) {
       if (this.state.symptomList.includes(x[0]) ) {
         if (x[1] === 'yes') {
-          dataToSend['PositiveSymptoms'].push(x[0])
+          dataToSend['positive_symptoms'].push(x[0])
         }
       } else {
         console.log('Do nothiung');

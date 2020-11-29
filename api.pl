@@ -18,9 +18,10 @@
 get_all_symptoms(Request) :-
     cors_enable(),
     option(method(get), Request),
+    format(user_output, "==========================================~n" ,[]),
     format(user_output, "Received GET request for api/diagnose~n", []),
     lista_objawow(L),
-    format(user_output, "Response ~w~n", [L]),
+    format(user_output, "all_symptoms ~w~n", [L]),
     reply_json(json([all_symptoms=L])).
 
 get_diagnose(Request) :-
@@ -30,16 +31,18 @@ get_diagnose(Request) :-
     format('~n').
 
 get_diagnose(Request) :-
+    format(user_output, "==========================================~n" ,[]),
     format(user_output,"Received POST request for api/diagnose~n",[]),
     cors_enable(),
     http_read_json(Request, DictIn, [json_object(dict)]),
     format(user_output,"DictIn is: ~p~n",[DictIn]),
-    format(user_output, "PositiveSymptoms are: ~p~n" ,[DictIn.PositiveSymptoms]),
-    maplist(atom_string, X, DictIn.PositiveSymptoms),
+    format(user_output, "positive_symptomss are: ~p~n" ,[DictIn.positive_symptoms]),
+    maplist(atom_string, X, DictIn.positive_symptoms),
     debug_diagnose(Y, X), !,
     format(user_output, "Diagnose is: ~p~n" ,[Y]),
     reply_json(json([diagnose=Y])).
     
 get_diagnose(_) :-
-    format(user_output, "Could not found diagnose~n" ,[]),
+    format(user_output, "==========================================~n" ,[]),
+    format(user_output, "No diagnose~n" ,[]),
     reply_json(json([])).
