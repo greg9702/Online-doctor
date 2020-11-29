@@ -189,6 +189,3 @@ clear :-
         abolish(objaw, 2),
         abolish(wiek, 2),
         abolish(temperatura, 2).
-
-
-
