@@ -1,6 +1,4 @@
-:- dynamic(objaw/2),
-   dynamic(temperatura/2),
-   dynamic(wiek/2).
+:- dynamic(objaw/2).
 
 %%%%%%%%%%%%%%%%%%%%%%% OGOLNE %%%%%%%%%%%%%%%%%%%%%%%%%
 % sprawdza czy dany element jest w liscie
@@ -22,28 +20,29 @@ jest_sublista([X|XS], [X|XSS]) :- jest_sublista(XS, XSS).
 
 jest_sublista([X|XS], [_|XSS]) :- jest_sublista([X|XS], XSS).
 
+przejdz_po_liscie([]).
+przejdz_po_liscie([H|T]) :- wykonaj_akcje(H), przejdz_po_liscie(T).
 
 %%%%%%%%%%%%%%%%%%%%%%%% BAZA %%%%%%%%%%%%%%%%%%%%%%%%%%
 % predykaty bazowe
-choroba(ch1, [a(x),d,b,e]).
 
-choroba(ch2, [b,a(x)]).
+choroba(grypa, [goraczka(wysoka_goraczka), bol_gardla, bol_glowy, bol_miesni, dreszcze, katar, kaszel]).
 
-choroba(ch3, [g,a(y),c,b]).
+choroba(przeziebienie, [bol_glowy, bol_gardla, kichanie, katar, dreszcze]).
+
+choroba(szkarlatyna, [bol_gardla, wysypka, goraczka(wysoka_goraczka), biegunka, obrzek_wezlow_chlonnych]).
+
+choroba(grypa_zoladkowa, [bol_brzucha, wymioty, goraczka(stan_podgoraczkowy), bol_glowy, biegunka]).
+
+choroba(rozyczka, [bol_glowy, wysypka, goraczka(wysoka_goraczka), katar, biegunka]).
 
 % ocenia chrobe na podstawie listy objawow
-ocen_chorobe(ch1, Wynik, ListaObjawow) :-
-        % TODO move sort to jest_sublista
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
         sort(ListaObjawow, ListaObjawowSorted),
-        sort([a(x), e], X),
+        sort([goraczka(wysoka_goraczka), bol_glowy, bol_miesni, dreszcze], X),
         jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
-
-ocen_chorobe(ch1, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
-        sort([b, a(x)], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 60.
+        Wynik = 100.
+% itd...
 
 % wartosc domyslna dla wszystkich pozostalych przpyadkow
 ocen_chorobe(_, Wynik, _) :-
@@ -103,34 +102,37 @@ znajdz_dopasowane_choroby(L, ListaObjawow) :-
 
 % zwraca liste wszystkich objawow jakie ma pacjent
 lista_objawow_pacjenta(L) :-
-        findall(P, objaw(pacjent, P), L).
+        findall(P, objaw(pacjent, P), L), !.
+
+lista_objawow_pacjenta(L) :-
+        [] = L.
 
 % predykaty dodajace "objawy" na podstawie parametrow wejsciowych
-process_wiek :-
-        wiek(pacjent, X),
-        X > 50,
-        assert(objaw(pacjent, wiek_pacjenta(podeszly_wiek))).
+process_wiek(Wiek) :-
+        Wiek > 50, !,
+        assertz(objaw(pacjent, wiek_pacjenta(podeszly_wiek))).
 
-process_wiek.
+process_wiek(_).
 
-process_goraczka :-
-        temperatura(pacjent, X),
-        X > 38, !,
-        assert(objaw(pacjent, goraczka(wysoka_goraczka))).
+process_goraczka(Temperatura) :-
+        Temperatura > 38, !,
+        assertz(objaw(pacjent, goraczka(wysoka_goraczka))).
 
-process_goraczka :-
-        temperatura(pacjent, X),
-        X > 37, !,
-        assert(objaw(pacjent, goraczka(stan_podgoraczkowy))).
+process_goraczka(Temperatura) :-
+        Temperatura >= 37, !,
+        assertz(objaw(pacjent, goraczka(stan_podgoraczkowy))).
 
-process_goraczka.
+process_goraczka(_).
 
-process_wejscie :-
-        process_wiek,
-        process_goraczka.
+wykonaj_akcje(X) :-
+        assertz(objaw(pacjent, X)).
+
+process_liste_objawow(ListaObjawow) :- 
+        przejdz_po_liscie(ListaObjawow).
 
 pierwszy_filter(X) :-
         lista_objawow_pacjenta(L),
+        format(user_output, "pierwszy_filter L: ~w~n" ,[L]),
         znajdz_choroby(X, L).
 
 drugi_filter(X) :-
@@ -155,43 +157,46 @@ lista_objawow(X) :-
 filter_list_atomic(In, Out) :-
         include(atomic(), In, Out).
 
-% process(H) :-
-        % write(H), nl.
+przetworz_dane_wejsciowe(Dane) :-
+        format(user_output, "przetworz_dane_wejsciowe...~n" ,[]),
+        maplist(atom_string, X, Dane.objawy),
+        number_string(Y, Dane.temperatura),
+        number_string(Z, Dane.wiek),
 
-% debugowe przykladowe dane
-% TODO assert -> assertz
-debug_bootstrap :-
-        assert(objaw(pacjent, a(x))),
-        assert(objaw(pacjent, b)),
-        assert(wiek(pacjent, 40)),
-        assert(temperatura(pacjent, 39)).
+        format(user_output, "X objawy  is: ~p~n" ,[X]),
+        format(user_output, "Y wiek is: ~p~n" ,[Y]),
+        format(user_output, "Z temperatura is: ~p~n" ,[Z]),
 
-postaw_diagnoze :-
+        process_liste_objawow(X),
+        process_goraczka(Y),
+        process_wiek(Z).
 
-        % debug data
-        debug_bootstrap,
+% TODO
+walidacja_danych_wejsciowych().
 
-        % process_wejscie,   
+postaw_diagnoze(DaneWejsciowe, Diagnoza) :-
+        format(user_output, "postaw_diagnoze...~n" ,[]),
+        przetworz_dane_wejsciowe(DaneWejsciowe), !,
+        format(user_output, "przetworz_dane_wejsciowe done~n" ,[]),
+        walidacja_danych_wejsciowych, !,
+        format(user_output, "walidacja_danych_wejsciowych done~n" ,[]),
+        
+        % for now
+        pierwszy_filter(Diagnoza),
 
-        % % debug print
-        lista_objawow_pacjenta(X),
-        write('Pacjent posiada objawy: '), write(X), nl,
-
-        % 1st filter
-        pierwszy_filter(L),
-        write('[I] Pacjent potencjalnie choruje na: '), write(L),
-
-        % 2nd filter
-        % drugi_filter(L).
-
-        % 3rd filter
-        % trzeci_filter(L).
-
+        % goal
+        % pierwszy_filter(X),
+        % drugi_filter(X, L),
+        % trzeci_filter(Diagnoza, L),
+        
+        
+        format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]),
         clear.
 
-debug_diagnose(L, X) :-
-        znajdz_choroby(L, X).
-
+postaw_diagnoze(_, Diagnoza) :-
+        format(user_output, "postaw_diagnoze 2nd hanlder~n" ,[]),
+        [] = Diagnoza,
+        clear. 
 
 clear :-
         abolish(objaw, 2),
