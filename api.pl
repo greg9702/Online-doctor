@@ -44,6 +44,6 @@ get_diagnose(Request) :-
     reply_json(json([diagnose=Y])).
     
 get_diagnose(_) :-
-    format(user_output, "==========================================~n" ,[]),
     format(user_output, "get_diagnose 2nd hanlder~n" ,[]),
-    reply_json(json([])).
+    [] = Y,
+    reply_json(json([diagnose=Y])).
