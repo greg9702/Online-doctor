@@ -1,4 +1,5 @@
-:- dynamic(objaw/2).
+:- dynamic(objaw/2),
+   dynamic(podejrzana_choroba/1).
 
 %%%%%%%%%%%%%%%%%%%%%%% OGOLNE %%%%%%%%%%%%%%%%%%%%%%%%%
 % sprawdza czy dany element jest w liscie
@@ -39,10 +40,16 @@ choroba(rozyczka, [bol_glowy, wysypka, goraczka(wysoka_goraczka), katar, biegunk
 % ocenia chrobe na podstawie listy objawow
 ocen_chorobe(grypa, Wynik, ListaObjawow) :-
         sort(ListaObjawow, ListaObjawowSorted),
-        sort([goraczka(wysoka_goraczka), bol_glowy, bol_miesni, dreszcze], X),
+        sort([goraczka(wysoka_goraczka), bol_gardla, bol_glowy], X),
         jest_sublista(X, ListaObjawowSorted), !,
         Wynik = 100.
 % itd...
+
+ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([bol_gardla, bol_glowy], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 100.
 
 % wartosc domyslna dla wszystkich pozostalych przpyadkow
 ocen_chorobe(_, Wynik, _) :-
@@ -190,13 +197,15 @@ postaw_diagnoze(DaneWejsciowe, Diagnoza) :-
 
         % for now
         format(user_output, "postaw_diagnoze 1st handler~n" ,[]),
-        pierwszy_filter(Diagnoza), !,
+        pierwszy_filter(Y), !,
+        Diagnoza = [Y],
         format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]).
 
 postaw_diagnoze(_, Diagnoza) :-
         format(user_output, "postaw_diagnoze 2nd handler~n" ,[]),
         drugi_filter(X), !,
-        trzeci_filter(X, Wynik, Diagnoza),
+        trzeci_filter(X, Wynik, Y),
+        Diagnoza = [Y],
         format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]).
 
 
