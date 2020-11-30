@@ -49,22 +49,6 @@ ocen_chorobe(_, Wynik, _) :-
         Wynik = 50.
 
 
-% Zwraca chorobe ktora jest najwyzej oceniana poprzez predykat ocen_chorobe.
-znajdz_najwyzej_oceniana_chorobe(ListaObjawowPacjenta, Wynik, K) :-
-    aggregate_all(max(N, Key),
-              (   choroba(Key, List),
-                  ocen_chorobe(Key,N,ListaObjawowPacjenta)
-              ),
-              max(Wynik, K)).
-
-% zwraca chorobe, ktora ma obecnie najwiecej objawow wspolnych
-znajdz_chorobe(MyList, HighMatchNum, K) :-
-    aggregate_all(max(N, Key),
-              (   choroba(Key, List),
-                  wspolne_objawy(MyList, List, N)
-              ),
-              max(HighMatchNum, K)).
-
 wspolne_objawy(MyList, List, N) :-
     intersection(MyList, List, L),
     length(L, N).
@@ -130,18 +114,37 @@ wykonaj_akcje(X) :-
 process_liste_objawow(ListaObjawow) :- 
         przejdz_po_liscie(ListaObjawow).
 
-pierwszy_filter(X) :-
+drugi_filter(X) :-
         lista_objawow_pacjenta(L),
-        format(user_output, "pierwszy_filter L: ~w~n" ,[L]),
+        % format(user_output, "drugi_filter L: ~w~n" ,[L]),
         znajdz_choroby(X, L).
 
-drugi_filter(X) :-
+trzeci_filter(ListaChorob, Wynik,Choroba) :-
+        lista_objawow_pacjenta(L),
+        dodaj_podejrzenie(ListaChorob),
+        znajdz_najwyzej_oceniana_chorobe(L, Wynik, Choroba),
+        retractall(podejrzana_choroba(Y)).
+
+
+pierwszy_filter(X) :-
         lista_objawow_pacjenta(L),
         znajdz_dopasowane_choroby(X, L).
 
-trzeci_filter(Wynik,Choroba) :-
-        lista_objawow_pacjenta(L),
-        znajdz_najwyzej_oceniana_chorobe(L, Wynik, Choroba).
+znajdz_najwyzej_oceniana_chorobe(ListaObjawowPacjenta, Wynik, K) :-
+    aggregate_all(max(N, Key),
+              (   podejrzana_choroba(Key),
+                  ocen_chorobe(Key,N,ListaObjawowPacjenta)
+              ),
+              max(Wynik, K)).
+
+ dodaj_podejrzenie([]).
+
+ dodaj_podejrzenie([H|T]) :- assert(podejrzana_choroba(H)), dodaj_podejrzenie(T).
+
+dodaj_podejrzenie([]).
+
+ dodaj_podejrzenie([H|T]) :- assert(podejrzana_choroba(H)), dodaj_podejrzenie(T).
+
 
 % zwrca liste wszystkich chorob
 lista_chorob(L) :-
@@ -186,17 +189,21 @@ postaw_diagnoze(DaneWejsciowe, Diagnoza) :-
         format(user_output, "lista_objawow_pacjenta ~w~n" ,[L]),
 
         % for now
-        pierwszy_filter(Diagnoza),
-
-        % our goal
-        % pierwszy_filter(X),
-        % drugi_filter(X, L),
-        % trzeci_filter(Diagnoza, L),
+        format(user_output, "postaw_diagnoze 1st handler~n" ,[]),
+        pierwszy_filter(Diagnoza), !,
         format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]).
 
-postaw_diagnoze(_, Diagnoza) :-
-        format(user_output, "postaw_diagnoze 2nd hanlder~n" ,[]),
-        [] = Diagnoza.
+postaw_diagnoze(_) :-
+        format(user_output, "postaw_diagnoze 2nd handler~n" ,[]),
+        drugi_filter(X),
+        not(member(_,X)), !,
+        trzeci_filter(X, Wynik, Diagnoza),
+        format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]).
+
+
+postaw_diagnoze(_) :-
+        format(user_output, "postaw_diagnoze 3nd handler~n" ,[]),
+        format(user_output, "Nie udalo sie postawic diagnozy",[]).
 
 clear :-
         abolish(objaw, 2),
