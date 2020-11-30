@@ -193,17 +193,17 @@ postaw_diagnoze(DaneWejsciowe, Diagnoza) :-
         pierwszy_filter(Diagnoza), !,
         format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]).
 
-postaw_diagnoze(_) :-
+postaw_diagnoze(_, Diagnoza) :-
         format(user_output, "postaw_diagnoze 2nd handler~n" ,[]),
-        drugi_filter(X),
-        not(member(_,X)), !,
+        drugi_filter(X), !,
         trzeci_filter(X, Wynik, Diagnoza),
         format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]).
 
 
-postaw_diagnoze(_) :-
+postaw_diagnoze(_, Diagnoza) :-
         format(user_output, "postaw_diagnoze 3nd handler~n" ,[]),
-        format(user_output, "Nie udalo sie postawic diagnozy",[]).
+        format(user_output, "Nie udalo sie postawic diagnozy",[]),
+        [] = Diagnoza.
 
 clear :-
         abolish(objaw, 2),
