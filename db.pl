@@ -175,28 +175,28 @@ przetworz_dane_wejsciowe(Dane) :-
 walidacja_danych_wejsciowych().
 
 postaw_diagnoze(DaneWejsciowe, Diagnoza) :-
+        clear,
         format(user_output, "postaw_diagnoze...~n" ,[]),
         przetworz_dane_wejsciowe(DaneWejsciowe), !,
         format(user_output, "przetworz_dane_wejsciowe done~n" ,[]),
         walidacja_danych_wejsciowych, !,
         format(user_output, "walidacja_danych_wejsciowych done~n" ,[]),
         
+        lista_objawow_pacjenta(L),
+        format(user_output, "lista_objawow_pacjenta ~w~n" ,[L]),
+
         % for now
         pierwszy_filter(Diagnoza),
 
-        % goal
+        % our goal
         % pierwszy_filter(X),
         % drugi_filter(X, L),
         % trzeci_filter(Diagnoza, L),
-        
-        
-        format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]),
-        clear.
+        format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]).
 
 postaw_diagnoze(_, Diagnoza) :-
         format(user_output, "postaw_diagnoze 2nd hanlder~n" ,[]),
-        [] = Diagnoza,
-        clear. 
+        [] = Diagnoza.
 
 clear :-
         abolish(objaw, 2),

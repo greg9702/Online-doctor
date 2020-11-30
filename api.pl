@@ -45,5 +45,5 @@ get_diagnose(Request) :-
     
 get_diagnose(_) :-
     format(user_output, "==========================================~n" ,[]),
-    format(user_output, "No diagnose~n" ,[]),
+    format(user_output, "get_diagnose 2nd hanlder~n" ,[]),
     reply_json(json([])).
