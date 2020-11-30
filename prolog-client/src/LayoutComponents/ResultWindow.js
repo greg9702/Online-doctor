@@ -3,6 +3,13 @@ import './LayoutComponent.css';
 
 class ResultWindow extends React.Component {
 
+  translateName(name) {
+    if (name) {
+      return name.replaceAll('_', ' ');
+    }
+    return name;
+  }
+
   render() {
     return (
       <div className="table">
@@ -12,8 +19,8 @@ class ResultWindow extends React.Component {
         <div className="header-spacing">
         </div>
         <div className="row-wrapper" >
-          {this.props.result !== null
-          ? <label className="row-wrapper-text">Moja diagnoza to {this.props.result}</label>
+          {this.props.result
+          ? <label className="row-wrapper-text">Moja diagnoza to { this.translateName(this.props.result) }</label>
           : <label className="row-wrapper-text">Nie udało się postawić diagnozy</label>
           }
         </div>

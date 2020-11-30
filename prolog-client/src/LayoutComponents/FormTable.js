@@ -10,23 +10,21 @@ class FormTable extends React.Component {
       serverAddress: 'http://localhost:8080',
       postApi: '/api/diagnose',
       getApi: '/api/symptoms',
-      questionPrefix: 'Czy ma Pan/Pani ',
       symptomList: [],
     }
   }
 
   handleSubmit(event) {
     const data = new FormData(event.target);
-    let dataToSend = {'positive_symptoms': []};
+    let dataToSend = {'objawy': []};
 
     for (var x of data) {
       if (this.state.symptomList.includes(x[0]) ) {
         if (x[1] === 'yes') {
-          dataToSend['positive_symptoms'].push(x[0])
+          dataToSend['objawy'].push(x[0])
         }
       } else {
-        console.log('Do nothiung');
-        // dataToSend[x[0]] = x[1]
+        dataToSend[x[0]] = x[1]
       }
     }
 
@@ -42,7 +40,7 @@ class FormTable extends React.Component {
     };
 
     // TODO
-    let resultName = "XXXXX";
+    let resultName = null;
     console.log('resultName before:', resultName);
     fetch(this.state.serverAddress + this.state.postApi, requestOptions)
     .then((response) => {
@@ -53,10 +51,12 @@ class FormTable extends React.Component {
             resultName = data['diagnose'][0];
             this.props.handler(resultName);
           } else {
+            // no diagnose found
             this.props.handler(null);
           }
         });
       } else {
+        // error occured
         throw Error(response.statusText)
       }
     }).catch(error => {
@@ -102,10 +102,14 @@ class FormTable extends React.Component {
           </div>
           <div className="header-spacing">
           </div>
-          {/* <div className="row-wrapper" >
-            <label className="row-wrapper-text">Aasdas asdfa</label>
-            <input className="row-answer-text" type="text" name="wiek"></input>
-          </div> */}
+          <div className="row-wrapper" >
+            <label className="row-wrapper-text">Ile ma Pan/Pani lat?</label>
+            <input className="row-answer-text" type="text" name="wiek" required></input>
+          </div>
+          <div className="row-wrapper" >
+            <label className="row-wrapper-text">Jaką ma Pan/Pani temperaturę?</label>
+            <input className="row-answer-text" type="text" name="temperatura" required></input>
+          </div>
           
           {this.state.symptomList.map((item, index) => {
               return <YesNoQuestion item={item} index={index}/>
