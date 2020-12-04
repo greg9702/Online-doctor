@@ -1,0 +1,15 @@
+.row-answer-text {
+    transform: scale(1.7);
+    width: 12%;
+    font-size: 12px;
+    text-align: center;
+    position: absolute;    
+    left: 80%;
+    font-family: 'Open Sans', sans-serif;
+    font-style: oblique;
+}
+
+.row-wrapper {
+    border-bottom: 1px solid #888;
+    padding: 20px;    
+}

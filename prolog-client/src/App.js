@@ -41,7 +41,6 @@ class App extends React.Component {
   }
 
   render() {
-
     let appContent;
 
     if (this.state.stage === stageEnum.FORM) {

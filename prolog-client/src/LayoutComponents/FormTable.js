@@ -1,6 +1,7 @@
 import React from 'react';
 import './LayoutComponent.css';
 import YesNoQuestion from './../QuestionComponents/YesNoQuestion.js';
+import TextQuestion from './../QuestionComponents/TextQuestion.js';
 
 class FormTable extends React.Component {
   constructor() {
@@ -39,7 +40,6 @@ class FormTable extends React.Component {
       body: JSON.stringify(dataToSend),
     };
 
-    // TODO
     let resultName = null;
     console.log('resultName before:', resultName);
     fetch(this.state.serverAddress + this.state.postApi, requestOptions)
@@ -102,14 +102,9 @@ class FormTable extends React.Component {
           </div>
           <div className="header-spacing">
           </div>
-          <div className="row-wrapper" >
-            <label className="row-wrapper-text">Ile ma Pan/Pani lat?</label>
-            <input className="row-answer-text" type="text" name="wiek" required></input>
-          </div>
-          <div className="row-wrapper" >
-            <label className="row-wrapper-text">Jaką ma Pan/Pani temperaturę?</label>
-            <input className="row-answer-text" type="text" name="temperatura" required></input>
-          </div>
+
+          <TextQuestion name={"wiek"}/>
+          <TextQuestion name={"temperatura"}/>
           
           {this.state.symptomList.map((item, index) => {
               return <YesNoQuestion item={item} index={index}/>
