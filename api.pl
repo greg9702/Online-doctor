@@ -20,7 +20,7 @@ get_all_symptoms(Request) :-
     option(method(get), Request),
     format(user_output, "==========================================~n" ,[]),
     format(user_output, "Received GET request for api/diagnose~n", []),
-    lista_objawow(L),
+    symptoms_list(L),
     format(user_output, "all_symptoms ~w~n", [L]),
     reply_json(json([all_symptoms=L])).
 
@@ -36,10 +36,10 @@ get_diagnose(Request) :-
     cors_enable(),
     http_read_json(Request, DictIn, [json_object(dict)]),
     format(user_output,"DictIn is: ~p~n",[DictIn]),
-    format(user_output, "objawy are: ~p~n" ,[DictIn.objawy]),
-    format(user_output, "wiek is: ~p~n" ,[DictIn.wiek]),
-    format(user_output, "temperatura is: ~p~n" ,[DictIn.temperatura]),
-    postaw_diagnoze(DictIn, Y), !,
+    format(user_output, "symptoms are: ~p~n" ,[DictIn.objawy]),
+    format(user_output, "age is: ~p~n" ,[DictIn.wiek]),
+    format(user_output, "temperature is: ~p~n" ,[DictIn.temperatura]),
+    make_diagnosis(DictIn, Y), !,
     format(user_output, "Diagnose is: ~p~n" ,[Y]),
     reply_json(json([diagnose=Y])).
     

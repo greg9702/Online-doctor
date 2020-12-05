@@ -1,363 +1,355 @@
-:- dynamic(objaw/2),
-   dynamic(podejrzana_choroba/1).
+:- dynamic(symptom/2),
+   dynamic(suspected_disease/1).
 
-%%%%%%%%%%%%%%%%%%%%%%% OGOLNE %%%%%%%%%%%%%%%%%%%%%%%%%
-% sprawdza czy dany element jest w liscie
-jest_w_liscie(H, [H|_]).
+%%%%%%%%%%%%%%%%%%%%%%% GENERAL %%%%%%%%%%%%%%%%%%%%%%%%%
+% Check if element is in list.
+is_in_list(H, [H|_]).
 
-jest_w_liscie(H, [_|T]) :- jest_w_liscie(H, T).
+is_in_list(H, [_|T]) :- is_in_list(H, T).
 
-jest_w_liscie(_, []) :- !, fail.
+is_in_list(_, []) :- !, fail.
 
-jest_w_liscie(Elem, [H|T]) :-
+is_in_list(Elem, [H|T]) :-
   Elem \= H,
   !,
-  jest_w_liscie(Elem, T).
+  is_in_list(Elem, T).
 
-% sprawdza czy lista jest sublista drugiej listy
-jest_sublista([], _ ).
+% Check if one list is a sublist of a given list.
+is_sublist([], _ ).
 
-jest_sublista([X|XS], [X|XSS]) :- jest_sublista(XS, XSS).
+is_sublist([X|XS], [X|XSS]) :- is_sublist(XS, XSS).
 
-jest_sublista([X|XS], [_|XSS]) :- jest_sublista([X|XS], XSS).
+is_sublist([X|XS], [_|XSS]) :- is_sublist([X|XS], XSS).
 
-przejdz_po_liscie([]).
-przejdz_po_liscie([H|T]) :- wykonaj_akcje(H), przejdz_po_liscie(T).
+iterate_list([]).
+iterate_list([H|T]) :- take_action(H), iterate_list(T).
 
 
-wartosc_max(L) :-
+max_value(L) :-
         L = 100.
 
-wartosc_min(L) :-
+min_value(L) :-
         L = 20.
 
-%%%%%%%%%%%%%%%%%%%%%%%% BAZA %%%%%%%%%%%%%%%%%%%%%%%%%%
-% predykaty bazowe
+%%%%%%%%%%%%%%%%%%%%%%%% DATABASE %%%%%%%%%%%%%%%%%%%%%%%%%%
+% Database predicates.
 
-choroba(grypa, [goraczka(wysoka_goraczka), bol_gardla, bol_glowy, bol_miesni, dreszcze, katar, kaszel]).
+disease(grypa, [goraczka(wysoka_goraczka), bol_gardla, bol_glowy, bol_miesni, dreszcze, katar, kaszel]).
 
-choroba(przeziebienie, [bol_glowy, bol_gardla, kichanie, katar]).
+disease(przeziebienie, [bol_glowy, bol_gardla, kichanie, katar]).
 
-choroba(szkarlatyna, [bol_gardla, wysypka, goraczka(wysoka_goraczka), biegunka, obrzek_wezlow_chlonnych]).
+disease(szkarlatyna, [bol_gardla, wysypka, goraczka(wysoka_goraczka), biegunka, obrzek_wezlow_chlonnych]).
 
-choroba(grypa_zoladkowa, [bol_brzucha, wymioty, goraczka(stan_podgoraczkowy), bol_glowy, biegunka]).
+disease(grypa_zoladkowa, [bol_brzucha, wymioty, goraczka(stan_podgoraczkowy), bol_glowy, biegunka]).
 
-choroba(rozyczka, [bol_glowy, wysypka, goraczka(wysoka_goraczka), katar, biegunka]).
+disease(rozyczka, [bol_glowy, wysypka, goraczka(wysoka_goraczka), katar, biegunka]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%%%%%%%%%%%%%%%%%%%%%%% ocen chrobe na podstawie listy objawow %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Rate the disease based on a symptoms list %%%%%%%%%%%%%%%%%%%%%%%%
 
-% predykat dla wszystkich chorob, dajacy max wynik, jezeli wszystkie objawy pasuja
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
-        choroba(grypa, L),
-        sort(L, X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        wartosc_max(Wynik).
-
-% [goraczka(wysoka_goraczka), bol_gardla, bol_glowy, bol_miesni, dreszcze, katar, kaszel]
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+% Gives max value if all of the symptoms match.
+rate_disease(grypa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), bol_gardla], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 80.
 
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), bol_gardla, bol_glowy], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 80.
 
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), bol_gardla, bol_miesni], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 80.
 
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), bol_gardla, dreszcze], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 80.
 
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), bol_gardla, katar], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 80.
 
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), bol_gardla, kaszel], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 80.
 
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), bol_gardla, katar], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 80.
 
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), bol_glowy, bol_miesni], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 80.
 
-ocen_chorobe(grypa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([bol_glowy, bol_miesni, dreszcze], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 80.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 80.
 
-ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
-        choroba(przeziebienie, L),
+rate_disease(przeziebienie, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
+        disease(przeziebienie, L),
         sort(L, X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        wartosc_max(Wynik).
+        is_sublist(X, SymptomsListSorted), !,
+        max_value(Result).
 
-ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(przeziebienie, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([bol_gardla, bol_glowy], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 85.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 85.
 
-ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(przeziebienie, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([bol_gardla, kichanie], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 85.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 85.
 
-ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(przeziebienie, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([bol_gardla, katar], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 85.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 85.
 
-ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(przeziebienie, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([bol_gardla], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 85.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 85.
 
-ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(przeziebienie, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([katar, kichanie], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 85.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 85.
 
-ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
-        choroba(szkarlatyna, L),
+rate_disease(szkarlatyna, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
+        disease(szkarlatyna, L),
         sort(L, X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        wartosc_max(Wynik).
+        is_sublist(X, SymptomsListSorted), !,
+        max_value(Result).
 
-ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
-        choroba(szkarlatyna, L),
+rate_disease(szkarlatyna, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
+        disease(szkarlatyna, L),
         sort(L, X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        wartosc_max(Wynik).
+        is_sublist(X, SymptomsListSorted), !,
+        max_value(Result).
 
-ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(szkarlatyna, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), bol_gardla], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 70.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 70.
 
-ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(szkarlatyna, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), wysypka], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 95.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 95.
 
-ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(szkarlatyna, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), obrzek_wezlow_chlonnych], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 90.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 90.
 
-ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(szkarlatyna, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(wysoka_goraczka), biegunka], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 85.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 85.
 
-ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(szkarlatyna, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([wysypka], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 40.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 40.
 
-ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
-        choroba(grypa_zoladkowa, L),
+rate_disease(grypa_zoladkowa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
+        disease(grypa_zoladkowa, L),
         sort(L, X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        wartosc_max(Wynik).
+        is_sublist(X, SymptomsListSorted), !,
+        max_value(Result).
 
-ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa_zoladkowa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([goraczka(stan_podgoraczkowy), wymioty], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 95.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 95.
 
-ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa_zoladkowa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([wymioty], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 90.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 90.
 
-ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa_zoladkowa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([biegunka], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 70.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 70.
 
-ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(grypa_zoladkowa, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([bol_glowy, biegunka], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 85.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 85.
 
-ocen_chorobe(rozyczka, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
-        choroba(rozyczka, L),
+rate_disease(rozyczka, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
+        disease(rozyczka, L),
         sort(L, X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        wartosc_max(Wynik).
+        is_sublist(X, SymptomsListSorted), !,
+        max_value(Result).
 
-ocen_chorobe(rozyczka, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(rozyczka, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([bol_glowy, biegunka], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 40.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 40.
 
-ocen_chorobe(rozyczka, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(rozyczka, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([wysypka], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 45.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 45.
 
-ocen_chorobe(rozyczka, Wynik, ListaObjawow) :-
-        sort(ListaObjawow, ListaObjawowSorted),
+rate_disease(rozyczka, Result, SymptomsList) :-
+        sort(SymptomsList, SymptomsListSorted),
         sort([wysypka, katar], X),
-        jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 60.
+        is_sublist(X, SymptomsListSorted), !,
+        Result = 60.
 
-% wartosc domyslna dla wszystkich pozostalych przpyadkow
-ocen_chorobe(_, Wynik, _) :-
-        wartosc_min(Wynik).
+% Default value for all other predicates.
+rate_disease(_, Result, _) :-
+        min_value(Result).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-wspolne_objawy(MyList, List, N) :-
+common_symptoms(MyList, List, N) :-
     intersection(MyList, List, L),
     length(L, N).
 
-% sprawdza czy podany objaw lub list objawow znajduje sie w liscie choroby
-sprawdz_objawy(Choroba, ListaObjawow) :-
-        choroba(Choroba, ListaObjawowChoroby),
-        sort(ListaObjawowChoroby, SortedListaObjawowChoroby),
-        sort(ListaObjawow, SortedListaObjawow),
-        jest_sublista(SortedListaObjawow, SortedListaObjawowChoroby).
+% Checks if the symptom or list of symptoms are in the disease symptoms list.
+check_symptoms(Disease, SymptomsList) :-
+        disease(Disease, SymptomsListDiseases),
+        sort(SymptomsListDiseases, SortedSymptomsListDiseases),
+        sort(SymptomsList, SortedSymptomsList),
+        is_sublist(SortedSymptomsList, SortedSymptomsListDiseases).
 
-sprawdz_objaw(Choroba, Objaw) :-
-        choroba(Choroba, ListaObj),
-        member(Objaw, ListaObj).
+sprawdz_objaw(Disease, Symptom) :-
+        disease(Disease, SymptomsList),
+        member(Symptom, SymptomsList).
 
-% zwraca list chorob ktora pasuje do podanego pojedynczego objawu lub listy 
-znajdz_choroby(L, ListaObjawow) :-
-        is_list(ListaObjawow), !,
-        bagof(Choroba, sprawdz_objawy(Choroba, ListaObjawow), L).
+% Returns a list of diseases matching the symptoms list or a given symptom.
+find_diseases(L, SymptomsList) :-
+        is_list(SymptomsList), !,
+        bagof(Disease, check_symptoms(Disease, SymptomsList), L).
 
-znajdz_choroby(L, Objaw) :-
-        bagof(Choroba, sprawdz_objaw(Choroba, Objaw), L).
+find_diseases(L, Symptom) :-
+        bagof(Disease, sprawdz_objaw(Disease, Symptom), L).
 
-% sprawdza czy podany objaw lub lista objawow pasuje dokladnie do listy objawow ktorejs choroby
-takie_same_objawy(Choroba, ListaObjawow) :-
-        choroba(Choroba, ListaObjawowChoroby),
-        sort(ListaObjawowChoroby, SortedListaObjawowChoroby),
-        sort(ListaObjawow, SortedListaObjawow),
-        SortedListaObjawow = SortedListaObjawowChoroby.
+% Checks if given symptom or a list of symptoms matches any disease symptoms list.
+same_symptoms(Disease, SymptomsList) :-
+        disease(Disease, SymptomsListDiseases),
+        sort(SymptomsListDiseases, SortedSymptomsListDiseases),
+        sort(SymptomsList, SortedSymptomsList),
+        SortedSymptomsList = SortedSymptomsListDiseases.
 
-% wykorzystujac takie_same_objawy znajduje choroby dokladnie pasujace do objawow
-znajdz_dopasowane_choroby(L, ListaObjawow) :-
-        is_list(ListaObjawow), !,
-        bagof(Choroba, takie_same_objawy(Choroba, ListaObjawow), L).
+% Finds diseases matching given symptoms.
+find_matching_diseases(L, SymptomsList) :-
+        is_list(SymptomsList), !,
+        bagof(Disease, same_symptoms(Disease, SymptomsList), L).
 
-% zwraca liste wszystkich objawow jakie ma pacjent
-lista_objawow_pacjenta(L) :-
-        findall(P, objaw(pacjent, P), L), !.
+% Returns a list of all patients symptoms.
+patient_symptoms_list(L) :-
+        findall(P, symptom(patient, P), L), !.
 
-lista_objawow_pacjenta(L) :-
+patient_symptoms_list(L) :-
         [] = L.
 
-% predykaty dodajace "objawy" na podstawie parametrow wejsciowych
-process_wiek(Wiek) :-
+% Complex predicates.
+process_age(Wiek) :-
         Wiek > 50, !,
-        assertz(objaw(pacjent, wiek_pacjenta(podeszly_wiek))).
+        assertz(symptom(patient, wiek_pacjenta(podeszly_wiek))).
 
-process_wiek(_).
+process_age(_).
 
-process_goraczka(Temperatura) :-
+process_fewer(Temperatura) :-
         Temperatura > 38, !,
-        assertz(objaw(pacjent, goraczka(wysoka_goraczka))).
+        assertz(symptom(patient, goraczka(wysoka_goraczka))).
 
-process_goraczka(Temperatura) :-
+process_fewer(Temperatura) :-
         Temperatura >= 37, !,
-        assertz(objaw(pacjent, goraczka(stan_podgoraczkowy))).
+        assertz(symptom(patient, goraczka(stan_podgoraczkowy))).
 
-process_goraczka(_).
+process_fewer(_).
 
-wykonaj_akcje(X) :-
-        assertz(objaw(pacjent, X)).
+take_action(X) :-
+        assertz(symptom(patient, X)).
 
-process_liste_objawow(ListaObjawow) :- 
-        przejdz_po_liscie(ListaObjawow).
+process_symptoms_list(SymptomsList) :- 
+        iterate_list(SymptomsList).
 
-drugi_filter(X) :-
-        lista_objawow_pacjenta(L),
-        % format(user_output, "drugi_filter L: ~w~n" ,[L]),
-        znajdz_choroby(X, L).
+second_filter(X) :-
+        patient_symptoms_list(L),
+        % format(user_output, "second_filter L: ~w~n" ,[L]),
+        find_diseases(X, L).
 
-trzeci_filter(ListaChorob, Wynik,Choroba) :-
-        lista_objawow_pacjenta(L),
-        dodaj_podejrzenie(ListaChorob),
-        znajdz_najwyzej_oceniana_chorobe(L, Wynik, Choroba),
-        retractall(podejrzana_choroba(_)).
+third_filter(DiseaseList, Result,Disease) :-
+        patient_symptoms_list(L),
+        add_suspicion(DiseaseList),
+        find_highest_graded_disease(L, Result, Disease),
+        retractall(suspected_disease(_)).
 
-pierwszy_filter(X) :-
-        lista_objawow_pacjenta(L),
-        znajdz_dopasowane_choroby(X, L).
+first_filter(X) :-
+        patient_symptoms_list(L),
+        find_matching_diseases(X, L).
 
-znajdz_najwyzej_oceniana_chorobe(ListaObjawowPacjenta, Wynik, K) :-
+find_highest_graded_disease(PatientSymptomsList, Result, K) :-
     aggregate_all(max(N, Key),
-              (   podejrzana_choroba(Key),
-                  ocen_chorobe(Key,N,ListaObjawowPacjenta)
+              (   suspected_disease(Key),
+                  rate_disease(Key,N,PatientSymptomsList)
               ),
-              max(Wynik, K)).
+              max(Result, K)).
 
-dodaj_podejrzenie([]).
+add_suspicion([]).
 
-dodaj_podejrzenie([H|T]) :- assert(podejrzana_choroba(H)), dodaj_podejrzenie(T).
+add_suspicion([H|T]) :- assert(suspected_disease(H)), add_suspicion(T).
 
-dodaj_podejrzenie([]).
+add_suspicion([]).
 
- dodaj_podejrzenie([H|T]) :- assert(podejrzana_choroba(H)), dodaj_podejrzenie(T).
+ add_suspicion([H|T]) :- assert(suspected_disease(H)), add_suspicion(T).
 
 
-% zwrca liste wszystkich chorob
-lista_chorob(L) :-
-        findall(P, choroba(P, _), L).
+% Returns all diseases in the database.
+disease_list(L) :-
+        findall(P, disease(P, _), L).
 
-% zwraca wszystkie mozliwe objawy
-lista_objawow(X) :-
-        findall(Z, choroba(X,Z),L),
+% Returns all possible symptoms.
+symptoms_list(X) :-
+        findall(Z, disease(X,Z),L),
         flatten(L,A),
         filter_list_atomic(A,B),
         sort(B,X).
@@ -365,47 +357,47 @@ lista_objawow(X) :-
 filter_list_atomic(In, Out) :-
         include(atomic(), In, Out).
 
-przetworz_dane_wejsciowe(Dane) :-
-        format(user_output, "przetworz_dane_wejsciowe...~n" ,[]),
-        maplist(atom_string, X, Dane.objawy),
-        number_string(Y, Dane.temperatura),
-        number_string(Z, Dane.wiek),
+process_input(Data) :-
+        format(user_output, "process_input...~n" ,[]),
+        maplist(atom_string, X, Data.objawy),
+        number_string(Y, Data.temperatura),
+        number_string(Z, Data.wiek),
 
-        format(user_output, "X objawy  is: ~p~n" ,[X]),
-        format(user_output, "Y wiek is: ~p~n" ,[Y]),
-        format(user_output, "Z temperatura is: ~p~n" ,[Z]),
+        format(user_output, "X symptoms are: ~p~n" ,[X]),
+        format(user_output, "Y age is: ~p~n" ,[Y]),
+        format(user_output, "Z temperature is: ~p~n" ,[Z]),
 
-        process_liste_objawow(X),
-        process_goraczka(Y),
-        process_wiek(Z).
+        process_symptoms_list(X),
+        process_fewer(Y),
+        process_age(Z).
 
-% TODO
-walidacja_danych_wejsciowych().
+validate_input().
 
-postaw_diagnoze(DaneWejsciowe, Diagnoza) :-
+
+make_diagnosis(Input, Diagnosis) :-
         clear,
-        format(user_output, "postaw_diagnoze...~n" ,[]),
-        przetworz_dane_wejsciowe(DaneWejsciowe), !,
-        format(user_output, "przetworz_dane_wejsciowe done~n" ,[]),
-        walidacja_danych_wejsciowych, !,
-        format(user_output, "walidacja_danych_wejsciowych done~n" ,[]),
+        format(user_output, "make_diagnosis...~n" ,[]),
+        process_input(Input), !,
+        format(user_output, "process_input done~n" ,[]),
+        validate_input, !,
+        format(user_output, "validate_input done~n" ,[]),
         
-        lista_objawow_pacjenta(L),
-        format(user_output, "lista_objawow_pacjenta ~w~n" ,[L]),
+        patient_symptoms_list(L),
+        format(user_output, "patient_symptoms_list ~w~n" ,[L]),
 
-        format(user_output, "postaw_diagnoze 1st handler~n" ,[]),
-        drugi_filter(X), !,
-        format(user_output, "drugi_filter done ~w~n" ,[X]),
-        trzeci_filter(X, W, Y),
-        Diagnoza = [Y],
-        format(user_output, "Diagnoza: ~w, wynik ~w~n" ,[Diagnoza, W]).
+        format(user_output, "make_diagnosis 1st handler~n" ,[]),
+        second_filter(X), !,
+        format(user_output, "second_filter done ~w~n" ,[X]),
+        third_filter(X, W, Y),
+        Diagnosis = [Y],
+        format(user_output, "Diagnosis: ~w, result ~w~n" ,[Diagnosis, W]).
 
-postaw_diagnoze(_, Diagnoza) :-
-        format(user_output, "postaw_diagnoze 3nd handler~n" ,[]),
-        format(user_output, "Nie udalo sie postawic diagnozy",[]),
-        [] = Diagnoza.
+make_diagnosis(_, Diagnosis) :-
+        format(user_output, "make_diagnosis 3nd handler~n" ,[]),
+        format(user_output, "Unable to make a diagnosis",[]),
+        [] = Diagnosis.
 
 clear :-
-        abolish(objaw, 2),
+        abolish(symptom, 2),
         abolish(wiek, 2),
         abolish(temperatura, 2).
