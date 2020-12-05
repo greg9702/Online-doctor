@@ -24,12 +24,19 @@ jest_sublista([X|XS], [_|XSS]) :- jest_sublista([X|XS], XSS).
 przejdz_po_liscie([]).
 przejdz_po_liscie([H|T]) :- wykonaj_akcje(H), przejdz_po_liscie(T).
 
+
+wartosc_max(L) :-
+        L = 100.
+
+wartosc_min(L) :-
+        L = 20.
+
 %%%%%%%%%%%%%%%%%%%%%%%% BAZA %%%%%%%%%%%%%%%%%%%%%%%%%%
 % predykaty bazowe
 
 choroba(grypa, [goraczka(wysoka_goraczka), bol_gardla, bol_glowy, bol_miesni, dreszcze, katar, kaszel]).
 
-choroba(przeziebienie, [bol_glowy, bol_gardla, kichanie, katar, dreszcze]).
+choroba(przeziebienie, [bol_glowy, bol_gardla, kichanie, katar]).
 
 choroba(szkarlatyna, [bol_gardla, wysypka, goraczka(wysoka_goraczka), biegunka, obrzek_wezlow_chlonnych]).
 
@@ -37,24 +44,216 @@ choroba(grypa_zoladkowa, [bol_brzucha, wymioty, goraczka(stan_podgoraczkowy), bo
 
 choroba(rozyczka, [bol_glowy, wysypka, goraczka(wysoka_goraczka), katar, biegunka]).
 
-% ocenia chrobe na podstawie listy objawow
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% ocen chrobe na podstawie listy objawow %%%%%%%%%%%%%%%%%%%%%%%%
+
+% predykat dla wszystkich chorob, dajacy max wynik, jezeli wszystkie objawy pasuja
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        choroba(grypa, L),
+        sort(L, X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        wartosc_max(Wynik).
+
+% [goraczka(wysoka_goraczka), bol_gardla, bol_glowy, bol_miesni, dreszcze, katar, kaszel]
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), bol_gardla], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 80.
+
 ocen_chorobe(grypa, Wynik, ListaObjawow) :-
         sort(ListaObjawow, ListaObjawowSorted),
         sort([goraczka(wysoka_goraczka), bol_gardla, bol_glowy], X),
         jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 100.
-% itd...
+        Wynik = 80.
+
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), bol_gardla, bol_miesni], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 80.
+
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), bol_gardla, dreszcze], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 80.
+
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), bol_gardla, katar], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 80.
+
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), bol_gardla, kaszel], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 80.
+
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), bol_gardla, katar], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 80.
+
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), bol_glowy, bol_miesni], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 80.
+
+ocen_chorobe(grypa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([bol_glowy, bol_miesni, dreszcze], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 80.
+
+ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        choroba(przeziebienie, L),
+        sort(L, X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        wartosc_max(Wynik).
 
 ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
         sort(ListaObjawow, ListaObjawowSorted),
         sort([bol_gardla, bol_glowy], X),
         jest_sublista(X, ListaObjawowSorted), !,
-        Wynik = 100.
+        Wynik = 85.
+
+ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([bol_gardla, kichanie], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 85.
+
+ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([bol_gardla, katar], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 85.
+
+ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([bol_gardla], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 85.
+
+ocen_chorobe(przeziebienie, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([katar, kichanie], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 85.
+
+ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        choroba(szkarlatyna, L),
+        sort(L, X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        wartosc_max(Wynik).
+
+ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        choroba(szkarlatyna, L),
+        sort(L, X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        wartosc_max(Wynik).
+
+ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), bol_gardla], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 70.
+
+ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), wysypka], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 95.
+
+ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), obrzek_wezlow_chlonnych], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 90.
+
+ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(wysoka_goraczka), biegunka], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 85.
+
+ocen_chorobe(szkarlatyna, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([wysypka], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 40.
+
+ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        choroba(grypa_zoladkowa, L),
+        sort(L, X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        wartosc_max(Wynik).
+
+ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([goraczka(stan_podgoraczkowy), wymioty], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 95.
+
+ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([wymioty], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 90.
+
+ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([biegunka], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 70.
+
+ocen_chorobe(grypa_zoladkowa, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([bol_glowy, biegunka], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 85.
+
+ocen_chorobe(rozyczka, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        choroba(rozyczka, L),
+        sort(L, X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        wartosc_max(Wynik).
+
+ocen_chorobe(rozyczka, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([bol_glowy, biegunka], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 40.
+
+ocen_chorobe(rozyczka, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([wysypka], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 45.
+
+ocen_chorobe(rozyczka, Wynik, ListaObjawow) :-
+        sort(ListaObjawow, ListaObjawowSorted),
+        sort([wysypka, katar], X),
+        jest_sublista(X, ListaObjawowSorted), !,
+        Wynik = 60.
 
 % wartosc domyslna dla wszystkich pozostalych przpyadkow
 ocen_chorobe(_, Wynik, _) :-
-        Wynik = 50.
+        wartosc_min(Wynik).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 wspolne_objawy(MyList, List, N) :-
     intersection(MyList, List, L),
@@ -130,8 +329,7 @@ trzeci_filter(ListaChorob, Wynik,Choroba) :-
         lista_objawow_pacjenta(L),
         dodaj_podejrzenie(ListaChorob),
         znajdz_najwyzej_oceniana_chorobe(L, Wynik, Choroba),
-        retractall(podejrzana_choroba(Y)).
-
+        retractall(podejrzana_choroba(_)).
 
 pierwszy_filter(X) :-
         lista_objawow_pacjenta(L),
@@ -144,9 +342,9 @@ znajdz_najwyzej_oceniana_chorobe(ListaObjawowPacjenta, Wynik, K) :-
               ),
               max(Wynik, K)).
 
- dodaj_podejrzenie([]).
+dodaj_podejrzenie([]).
 
- dodaj_podejrzenie([H|T]) :- assert(podejrzana_choroba(H)), dodaj_podejrzenie(T).
+dodaj_podejrzenie([H|T]) :- assert(podejrzana_choroba(H)), dodaj_podejrzenie(T).
 
 dodaj_podejrzenie([]).
 
@@ -195,13 +393,12 @@ postaw_diagnoze(DaneWejsciowe, Diagnoza) :-
         lista_objawow_pacjenta(L),
         format(user_output, "lista_objawow_pacjenta ~w~n" ,[L]),
 
-        % for now
         format(user_output, "postaw_diagnoze 1st handler~n" ,[]),
         drugi_filter(X), !,
         format(user_output, "drugi_filter done ~w~n" ,[X]),
-        trzeci_filter(X, Wynik, Y),
+        trzeci_filter(X, W, Y),
         Diagnoza = [Y],
-        format(user_output, "Diagnoza: ~w~n" ,[Diagnoza]).
+        format(user_output, "Diagnoza: ~w, wynik ~w~n" ,[Diagnoza, W]).
 
 postaw_diagnoze(_, Diagnoza) :-
         format(user_output, "postaw_diagnoze 3nd handler~n" ,[]),
