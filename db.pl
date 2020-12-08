@@ -364,8 +364,8 @@ process_input(Data) :-
         number_string(Z, Data.wiek),
 
         format(user_output, "X symptoms are: ~p~n" ,[X]),
-        format(user_output, "Y age is: ~p~n" ,[Y]),
-        format(user_output, "Z temperature is: ~p~n" ,[Z]),
+        format(user_output, "Y temperature is: ~p~n" ,[Y]),
+        format(user_output, "Z age is: ~p~n" ,[Z]),
 
         process_symptoms_list(X),
         process_fewer(Y),
