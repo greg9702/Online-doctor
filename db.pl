@@ -290,18 +290,18 @@ patient_symptoms_list(L) :-
         [] = L.
 
 % Complex predicates.
-process_age(Wiek) :-
-        Wiek > 50, !,
+process_age(X) :-
+        X > 50, !,
         assertz(symptom(patient, wiek_pacjenta(podeszly_wiek))).
 
 process_age(_).
 
-process_fewer(Temperatura) :-
-        Temperatura > 38, !,
+process_fewer(X) :-
+        X > 38, !,
         assertz(symptom(patient, goraczka(wysoka_goraczka))).
 
-process_fewer(Temperatura) :-
-        Temperatura >= 37, !,
+process_fewer(X) :-
+        X >= 37, !,
         assertz(symptom(patient, goraczka(stan_podgoraczkowy))).
 
 process_fewer(_).
