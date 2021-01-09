@@ -13,7 +13,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
   server:
     container_name: "prolog-server"
-    build: .
+    build: prolog-server/.
     stdin_open: true
     ports:
         - "8080:8080"
