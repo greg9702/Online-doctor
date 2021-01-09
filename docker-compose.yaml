@@ -11,9 +11,15 @@ services:
       - "/app/node_modules"
     environment:
       - CHOKIDAR_USEPOLLING=true
-  server:
+  prolog_server:
     container_name: "prolog-server"
     build: prolog-server/.
     stdin_open: true
     ports:
         - "8080:8080"
+  python_server:
+    container_name: "python-server"
+    build: python-server/.
+    stdin_open: true
+    ports:
+        - "5000:5000"
