@@ -20,6 +20,17 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.server-switch-element-spacing {
+    margin-bottom: 5px;
+}
+
+.server-switch {
+    width: auto;
+    text-align: center;
+    margin-top: 3%;
+    border-bottom: 1px solid #888;
+    width: 100%;
+}
 
 .table-button {
     position: sticky;

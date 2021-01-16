@@ -2,34 +2,47 @@ import React from 'react';
 import './LayoutComponent.css';
 import YesNoQuestion from './../QuestionComponents/YesNoQuestion.js';
 import TextQuestion from './../QuestionComponents/TextQuestion.js';
+import Switch from './Switch.js';
+
+const pythonPort = 5000;
+const prologPort = 8080;
 
 class FormTable extends React.Component {
   constructor() {
     super();
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.sendSubmitDiagnose.bind(this);
+    this.handleToggle = this.toogleState.bind(this);
     this.state = {
-      serverAddress: 'http://localhost:8080',
+      serverAddress: 'http://localhost:',
+      serverPort: prologPort,
       postApi: '/api/diagnose',
       getApi: '/api/symptoms',
-      symptomList: [],
+      symptomList: []
     }
   }
 
-  handleSubmit(event) {
+  async toogleState() {
+    if (this.state.serverPort === pythonPort) {
+      await this.setState({serverPort: prologPort});
+    } else {
+      await this.setState({serverPort: pythonPort});
+    }
+    this.sendGetAllSymptoms();
+  }
+
+  sendSubmitDiagnose(event) {
     const data = new FormData(event.target);
     let dataToSend = {'objawy': []};
-
+    let xd = this.state.symptomList;
     for (var x of data) {
       if (this.state.symptomList.includes(x[0]) ) {
         if (x[1] === 'yes') {
-          dataToSend['objawy'].push(x[0])
+          dataToSend['objawy'].push(x[0]);
         }
       } else {
-        dataToSend[x[0]] = x[1]
+        dataToSend[x[0]] = x[1];
       }
     }
-
-    console.log(dataToSend);
 
     const requestOptions = {
       method: 'POST',
@@ -41,8 +54,8 @@ class FormTable extends React.Component {
     };
 
     let resultName = null;
-    console.log('resultName before:', resultName);
-    fetch(this.state.serverAddress + this.state.postApi, requestOptions)
+    
+    fetch(this.state.serverAddress + this.state.serverPort + this.state.postApi, requestOptions)
     .then((response) => {
       if (response.status === 200) {
         response.json().then(data => {
@@ -63,12 +76,11 @@ class FormTable extends React.Component {
       this.props.errorHanlder();
       console.log("Error sending request")
     })
-    console.log('resultName after:', resultName);
     event.preventDefault();
   }
 
-  sendGetAllSymptoms = () => {
-    fetch(this.state.serverAddress + this.state.getApi)
+  sendGetAllSymptoms() {
+    fetch(this.state.serverAddress + this.state.serverPort + this.state.getApi)
     .then((response) => {
       if (response.status === 200) {
         response.json().then(data => {
@@ -101,6 +113,14 @@ class FormTable extends React.Component {
             <h1 className="table-title-text">Odpowiedz na pytania</h1>
           </div>
           <div className="header-spacing">
+          </div>
+
+          <div className="server-switch">
+            <span className="server-switch-element">Prolog</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span></span>
+            <span className="server-switch-element">Python</span>
+            <div className="server-switch-element-spacing"></div>
+            <Switch handleToggle={this.handleToggle}/>
           </div>
 
           <TextQuestion name={"wiek"}/>
