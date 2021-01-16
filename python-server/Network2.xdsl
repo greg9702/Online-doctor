@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only -->
+<smile version="1.0" id="Network2" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="przeziebienie">
+			<state id="tak" />
+			<state id="nie" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="grypa">
+			<state id="tak" />
+			<state id="nie" />
+			<probabilities>0.4 0.6</probabilities>
+		</cpt>
+		<cpt id="szkarlatyna">
+			<state id="tak" />
+			<state id="nie" />
+			<probabilities>0.3 0.7</probabilities>
+		</cpt>
+		<noisymax id="bol_gardla">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>przeziebienie grypa szkarlatyna</parents>
+			<strengths>0 1 0 1 0 1</strengths>
+			<parameters>0.6 0.4 0 1 0.8 0.2 0 1 0.7 0.3 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<cpt id="grypa_zoladkowa">
+			<state id="tak" />
+			<state id="nie" />
+			<probabilities>0.1 0.9</probabilities>
+		</cpt>
+		<cpt id="rozyczka">
+			<state id="tak" />
+			<state id="nie" />
+			<probabilities>0.2 0.8</probabilities>
+		</cpt>
+		<noisymax id="bol_glowy">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>grypa przeziebienie grypa_zoladkowa rozyczka</parents>
+			<strengths>0 1 0 1 0 1 0 1</strengths>
+			<parameters>0.5 0.5 0 1 0.2 0.8 0 1 0.4 0.6 0 1 0.7 0.3 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="bol_miesni">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>grypa</parents>
+			<strengths>0 1</strengths>
+			<parameters>0.7 0.3 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="dreszcze">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>grypa</parents>
+			<strengths>0 1</strengths>
+			<parameters>0.6 0.4 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="katar">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>grypa przeziebienie rozyczka</parents>
+			<strengths>0 1 0 1 0 1</strengths>
+			<parameters>0.4 0.6 0 1 0.5 0.5 0 1 0.8 0.2 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="kaszel">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>grypa</parents>
+			<strengths>0 1</strengths>
+			<parameters>0.5 0.5 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="kichanie">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>przeziebienie</parents>
+			<strengths>0 1</strengths>
+			<parameters>1 0 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="wysypka">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>szkarlatyna rozyczka</parents>
+			<strengths>0 1 0 1</strengths>
+			<parameters>0.3 0.7 0 1 0.8 0.2 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="biegunka">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>grypa_zoladkowa szkarlatyna rozyczka</parents>
+			<strengths>0 1 0 1 0 1</strengths>
+			<parameters>0.8 0.2 0 1 0.5 0.5 0 1 0.3 0.7 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="obrzek_wezlow_chlonnych">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>szkarlatyna</parents>
+			<strengths>0 1</strengths>
+			<parameters>0.8 0.2 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="goraczka">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>grypa szkarlatyna grypa_zoladkowa rozyczka</parents>
+			<strengths>0 1 0 1 0 1 0 1</strengths>
+			<parameters>0.9 0.09999999999999998 0 1 0.6 0.4 0 1 0.5 0.5 0 1 0.9 0.09999999999999998 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="bol_brzucha">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>grypa_zoladkowa</parents>
+			<strengths>0 1</strengths>
+			<parameters>0.9 0.09999999999999998 0 1 0.5 0.5</parameters>
+		</noisymax>
+		<noisymax id="wymioty">
+			<state id="tak" />
+			<state id="nie" />
+			<parents>grypa_zoladkowa</parents>
+			<strengths>0 1</strengths>
+			<parameters>0.8 0.2 0 1 0.5 0.5</parameters>
+		</noisymax>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network2">
+			<node id="bol_gardla">
+				<name>bol_gardla</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>184 290 301 373</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="bol_glowy">
+				<name>bol_glowy</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>745 331 861 411</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="bol_miesni">
+				<name>bol_miesni</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>5 281 131 357</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="dreszcze">
+				<name>dreszcze</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>11 121 132 201</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="katar">
+				<name>katar</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>589 324 697 399</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="kaszel">
+				<name>kaszel</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>11 197 123 274</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="kichanie">
+				<name>kichanie</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>896 332 1006 404</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="wysypka">
+				<name>wysypka</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1262 340 1383 414</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="biegunka">
+				<name>biegunka</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1426 341 1542 417</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="obrzek_wezlow_chlonnych">
+				<name>obrzek_wezlow_chlonnych</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1063 336 1185 412</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="grypa">
+				<name>grypa</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>458 10 595 85</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="przeziebienie">
+				<name>przeziebienie</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>622 10 759 85</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="szkarlatyna">
+				<name>szkarlatyna</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>999 2 1136 77</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="grypa_zoladkowa">
+				<name>grypa_zoladkowa</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1226 0 1363 75</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="rozyczka">
+				<name>rozyczka</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>801 7 938 82</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="goraczka">
+				<name>goraczka</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>384 299 501 382</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="bol_brzucha">
+				<name>bol_brzucha</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1543 87 1665 163</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="wymioty">
+				<name>wymioty</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1545 169 1660 245</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+		</genie>
+	</extensions>
+</smile>
