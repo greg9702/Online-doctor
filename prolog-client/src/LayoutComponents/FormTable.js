@@ -32,18 +32,18 @@ class FormTable extends React.Component {
 
   sendSubmitDiagnose(event) {
     const data = new FormData(event.target);
-    let dataToSend = {'objawy': []};
-    let xd = this.state.symptomList;
+    let dataToSend = {'symptoms': []};
+
     for (var x of data) {
       if (this.state.symptomList.includes(x[0]) ) {
         if (x[1] === 'yes') {
-          dataToSend['objawy'].push(x[0]);
+          dataToSend['symptoms'].push(x[0]);
         }
       } else {
         dataToSend[x[0]] = x[1];
       }
     }
-
+    console.log(dataToSend);
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -123,8 +123,8 @@ class FormTable extends React.Component {
             <Switch handleToggle={this.handleToggle}/>
           </div>
 
-          <TextQuestion name={"wiek"}/>
-          <TextQuestion name={"temperatura"}/>
+          <TextQuestion name={"age"}/>
+          <TextQuestion name={"temperature"}/>
           
           {this.state.symptomList.map((item, index) => {
               return <YesNoQuestion item={item} index={index}/>

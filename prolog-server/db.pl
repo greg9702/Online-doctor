@@ -359,9 +359,9 @@ filter_list_atomic(In, Out) :-
 
 process_input(Data) :-
         format(user_output, "process_input...~n" ,[]),
-        maplist(atom_string, X, Data.objawy),
-        number_string(Y, Data.temperatura),
-        number_string(Z, Data.wiek),
+        maplist(atom_string, X, Data.symptoms),
+        number_string(Y, Data.temperature),
+        number_string(Z, Data.age),
 
         format(user_output, "X symptoms are: ~p~n" ,[X]),
         format(user_output, "Y temperature is: ~p~n" ,[Y]),
@@ -399,5 +399,5 @@ make_diagnosis(_, Diagnosis) :-
 
 clear :-
         abolish(symptom, 2),
-        abolish(wiek, 2),
-        abolish(temperatura, 2).
+        abolish(age, 2),
+        abolish(temperature, 2).

@@ -13,8 +13,8 @@ class TextQuestion extends React.Component {
   }
 
   translationDictionary = {
-    'wiek' : 'Ile ma Pan/Pani lat?',
-    'temperatura': 'Jaką ma Pan/Pani temperaturę?',
+    'age' : 'Ile ma Pan/Pani lat?',
+    'temperature': 'Jaką ma Pan/Pani temperaturę?',
   }
 
   translateName(name) {

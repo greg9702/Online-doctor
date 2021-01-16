@@ -14,7 +14,7 @@ def symptoms():
 def diagnose():
     # TODO genearate list of symptoms here
     data = request.json
-    symptoms = data['objawy']
+    symptoms = data['symptoms']
     print(f'Received data: {symptoms}')
     return jsonify(data=data)
 

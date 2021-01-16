@@ -36,9 +36,9 @@ get_diagnose(Request) :-
     cors_enable(),
     http_read_json(Request, DictIn, [json_object(dict)]),
     format(user_output,"DictIn is: ~p~n",[DictIn]),
-    format(user_output, "symptoms are: ~p~n" ,[DictIn.objawy]),
-    format(user_output, "age is: ~p~n" ,[DictIn.wiek]),
-    format(user_output, "temperature is: ~p~n" ,[DictIn.temperatura]),
+    format(user_output, "symptoms are: ~p~n" ,[DictIn.symptoms]),
+    format(user_output, "age is: ~p~n" ,[DictIn.age]),
+    format(user_output, "temperature is: ~p~n" ,[DictIn.temperature]),
     make_diagnosis(DictIn, Y), !,
     format(user_output, "Diagnose is: ~p~n" ,[Y]),
     reply_json(json([diagnose=Y])).
