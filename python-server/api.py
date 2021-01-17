@@ -16,8 +16,8 @@ def symptoms():
 def diagnose():
     data = request.json
     symptoms = data['symptoms']
-    age = data['age']
-    temperature = data['temperature']
+    age = int(data['age'])
+    temperature = int(data['temperature'])
     diagnose = diagnose_network.get_diagnose(age, temperature, symptoms)
 
     return_array = []
