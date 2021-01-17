@@ -5,41 +5,41 @@
 		<cpt id="przeziebienie">
 			<state id="tak" />
 			<state id="nie" />
-			<probabilities>0.5 0.5</probabilities>
+			<probabilities>0.3 0.7</probabilities>
 		</cpt>
 		<cpt id="grypa">
 			<state id="tak" />
 			<state id="nie" />
-			<probabilities>0.4 0.6</probabilities>
+			<probabilities>0.15 0.8500000000000001</probabilities>
 		</cpt>
 		<cpt id="szkarlatyna">
 			<state id="tak" />
 			<state id="nie" />
-			<probabilities>0.3 0.7</probabilities>
+			<probabilities>0.1 0.9</probabilities>
 		</cpt>
 		<noisymax id="bol_gardla">
 			<state id="tak" />
 			<state id="nie" />
 			<parents>przeziebienie grypa szkarlatyna</parents>
 			<strengths>0 1 0 1 0 1</strengths>
-			<parameters>0.6 0.4 0 1 0.8 0.2 0 1 0.7 0.3 0 1 0.5 0.5</parameters>
+			<parameters>0.8 0.2 0 1 0.6 0.4 0 1 0.5 0.5 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<cpt id="grypa_zoladkowa">
 			<state id="tak" />
 			<state id="nie" />
-			<probabilities>0.1 0.9</probabilities>
+			<probabilities>0.2 0.8</probabilities>
 		</cpt>
 		<cpt id="rozyczka">
 			<state id="tak" />
 			<state id="nie" />
-			<probabilities>0.2 0.8</probabilities>
+			<probabilities>0.05 0.95</probabilities>
 		</cpt>
 		<noisymax id="bol_glowy">
 			<state id="tak" />
 			<state id="nie" />
 			<parents>grypa przeziebienie grypa_zoladkowa rozyczka</parents>
 			<strengths>0 1 0 1 0 1 0 1</strengths>
-			<parameters>0.5 0.5 0 1 0.2 0.8 0 1 0.4 0.6 0 1 0.7 0.3 0 1 0.5 0.5</parameters>
+			<parameters>0.8 0.2 0 1 0.5 0.5 0 1 0.4 0.6 0 1 0.5 0.5 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<noisymax id="bol_miesni">
 			<state id="tak" />
@@ -53,14 +53,14 @@
 			<state id="nie" />
 			<parents>grypa</parents>
 			<strengths>0 1</strengths>
-			<parameters>0.6 0.4 0 1 0.5 0.5</parameters>
+			<parameters>0.8 0.2 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<noisymax id="katar">
 			<state id="tak" />
 			<state id="nie" />
 			<parents>grypa przeziebienie rozyczka</parents>
 			<strengths>0 1 0 1 0 1</strengths>
-			<parameters>0.4 0.6 0 1 0.5 0.5 0 1 0.8 0.2 0 1 0.5 0.5</parameters>
+			<parameters>0.4 0.6 0 1 0.8 0.2 0 1 0.4 0.6 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<noisymax id="kaszel">
 			<state id="tak" />
@@ -74,49 +74,49 @@
 			<state id="nie" />
 			<parents>przeziebienie</parents>
 			<strengths>0 1</strengths>
-			<parameters>1 0 0 1 0.5 0.5</parameters>
+			<parameters>0.6 0.4 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<noisymax id="wysypka">
 			<state id="tak" />
 			<state id="nie" />
 			<parents>szkarlatyna rozyczka</parents>
 			<strengths>0 1 0 1</strengths>
-			<parameters>0.3 0.7 0 1 0.8 0.2 0 1 0.5 0.5</parameters>
+			<parameters>0.3 0.7 0 1 0.8 0.2 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<noisymax id="biegunka">
 			<state id="tak" />
 			<state id="nie" />
 			<parents>grypa_zoladkowa szkarlatyna rozyczka</parents>
 			<strengths>0 1 0 1 0 1</strengths>
-			<parameters>0.8 0.2 0 1 0.5 0.5 0 1 0.3 0.7 0 1 0.5 0.5</parameters>
+			<parameters>0.8 0.2 0 1 0.4 0.6 0 1 0.3 0.7 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<noisymax id="obrzek_wezlow_chlonnych">
 			<state id="tak" />
 			<state id="nie" />
 			<parents>szkarlatyna</parents>
 			<strengths>0 1</strengths>
-			<parameters>0.8 0.2 0 1 0.5 0.5</parameters>
+			<parameters>0.8 0.2 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<noisymax id="goraczka">
 			<state id="tak" />
 			<state id="nie" />
 			<parents>grypa szkarlatyna grypa_zoladkowa rozyczka</parents>
 			<strengths>0 1 0 1 0 1 0 1</strengths>
-			<parameters>0.9 0.09999999999999998 0 1 0.6 0.4 0 1 0.5 0.5 0 1 0.9 0.09999999999999998 0 1 0.5 0.5</parameters>
+			<parameters>0.5 0.5 0 1 0.8 0.2 0 1 0.5 0.5 0 1 0.5 0.5 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<noisymax id="bol_brzucha">
 			<state id="tak" />
 			<state id="nie" />
 			<parents>grypa_zoladkowa</parents>
 			<strengths>0 1</strengths>
-			<parameters>0.9 0.09999999999999998 0 1 0.5 0.5</parameters>
+			<parameters>0.9 0.09999999999999998 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 		<noisymax id="wymioty">
 			<state id="tak" />
 			<state id="nie" />
 			<parents>grypa_zoladkowa</parents>
 			<strengths>0 1</strengths>
-			<parameters>0.8 0.2 0 1 0.5 0.5</parameters>
+			<parameters>0.8 0.2 0 1 0.09999999999999998 0.9</parameters>
 		</noisymax>
 	</nodes>
 	<extensions>
@@ -134,7 +134,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>745 331 861 411</position>
+				<position>740 330 856 410</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="bol_miesni">
@@ -174,7 +174,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>896 332 1006 404</position>
+				<position>900 332 1010 404</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="wysypka">
@@ -182,7 +182,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1262 340 1383 414</position>
+				<position>1260 346 1381 420</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="biegunka">
@@ -198,7 +198,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1063 336 1185 412</position>
+				<position>1044 333 1166 409</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="grypa">
@@ -214,7 +214,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>622 10 759 85</position>
+				<position>622 6 759 81</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="szkarlatyna">
@@ -222,7 +222,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>999 2 1136 77</position>
+				<position>996 4 1133 79</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="grypa_zoladkowa">
@@ -230,7 +230,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1226 0 1363 75</position>
+				<position>1203 10 1340 85</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="rozyczka">
@@ -238,7 +238,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>801 7 938 82</position>
+				<position>786 3 923 78</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="goraczka">
@@ -246,7 +246,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>384 299 501 382</position>
+				<position>404 329 521 412</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
 			<node id="bol_brzucha">
